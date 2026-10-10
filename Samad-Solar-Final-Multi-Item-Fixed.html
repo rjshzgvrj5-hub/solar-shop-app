@@ -1,0 +1,713 @@
+<!doctype html><html lang="ps" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Samad Solar</title><style>:root{--theme:var(--theme)}*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f3f7f6;color:#17212b}.top{background:var(--theme);color:#fff;padding:14px 18px;display:flex;justify-content:space-between}.wrap{display:flex;min-height:calc(100vh - 52px)}nav{width:210px;background:#103b38;padding:10px;display:flex;flex-direction:column;gap:5px}nav button{background:transparent;color:#fff;border:0;padding:11px;text-align:right;border-radius:8px;cursor:pointer}nav button:hover{background:var(--theme)}main{flex:1;padding:18px;max-width:1200px;margin:auto}.page{display:none}.page.on{display:block}.page.on{display:block}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.card,.form{background:#fff;border-radius:13px;padding:15px;box-shadow:0 2px 9px #0001}.num{font-size:24px;font-weight:bold;margin-top:8px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}label{display:block;font-size:13px;font-weight:bold;margin:5px 0}input,select{width:100%;padding:10px;border:1px solid #ccd5d8;border-radius:8px}button{border:0;border-radius:8px;padding:10px 14px;cursor:pointer}.primary{background:var(--theme);color:#fff}.danger{background:#dc2626;color:#fff}.actions{margin-top:12px;display:flex;gap:8px}table{width:100%;background:#fff;border-collapse:collapse;margin-top:12px}th,td{padding:9px;border-bottom:1px solid #eee;text-align:right}th{background:#e5f2f0}.qty-control{display:flex;align-items:center;justify-content:space-between;gap:10px}.qty-control button{width:34px;height:34px;padding:0;font-size:20px;background:#e8f1ef;color:#123;border:1px solid #ccd5d8}.notice{background:#fff3c4;padding:10px;border-radius:9px;margin-bottom:12px}@media(max-width:700px){.wrap{display:block}nav{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}nav button{text-align:center;font-size:12px}main{padding:10px}}</style>
+<style>
+.invoice.design1{border:2px solid var(--theme);background:#fff}
+.invoice.design2{border-top:8px solid var(--theme);background:linear-gradient(180deg,#fff 0%,#f5fbfa 100%)}
+.invoice.design3{border:1px solid #ddd;background:#fff;border-radius:0;box-shadow:inset 0 0 0 8px #f1f5f4}
+.invoice.design4{background:linear-gradient(135deg,#fff,#eef8f7);border-left:8px solid var(--theme)}
+.invoice.design5{background:radial-gradient(circle at top right,#e7f6f4,#fff 55%);border:1px solid var(--theme);border-radius:22px}
+</style><style>
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:20;place-items:center;padding:15px}
+.modal.on{display:grid}.modalbox{background:white;border-radius:16px;padding:20px;width:min(720px,96%);max-height:90vh;overflow:auto}
+.invoice{background:#fff;padding:25px;border-radius:10px}.invoice h2{text-align:center}.invoice-head{display:flex;justify-content:space-between;gap:20px;border-bottom:2px solid var(--theme);padding-bottom:12px}.invoice table{margin-top:15px}.logo{max-width:110px;max-height:70px;object-fit:contain}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.pill{background:#e7f3f1;padding:7px 10px;border-radius:20px}.toplogo{width:34px;height:34px;object-fit:contain;vertical-align:middle;background:#fff;border-radius:6px;padding:2px}.invoice{position:relative;overflow:hidden}.invoice-watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0}.invoice-watermark img{width:260px;height:260px;object-fit:contain;opacity:.08}.invoice>*:not(.invoice-watermark){position:relative;z-index:1}
+@media print{body>*{display:none!important}#invoiceModal{display:block!important;position:static;background:white;padding:0}.modalbox{box-shadow:none;width:100%;max-height:none}.no-print{display:none!important}}
+
+.invoice-design-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:10px}.design-card{border:2px solid #e2e8f0;border-radius:14px;padding:9px;background:#fff;cursor:pointer;transition:.15s}.design-card:hover{transform:translateY(-2px);box-shadow:0 5px 16px #0002}.design-card.selected{border-color:var(--theme);box-shadow:0 0 0 3px color-mix(in srgb,var(--theme) 18%,transparent)}.design-preview{height:170px;border-radius:10px;overflow:hidden;border:1px solid #dbe3e5;position:relative;padding:10px;background:#fff}.design-preview .dp-head{height:24px;border-radius:5px;margin-bottom:9px}.design-preview .dp-line{height:7px;border-radius:3px;background:#d9e2e5;margin:6px 0}.design-preview .dp-line.short{width:58%}.design-preview .dp-table{margin-top:10px;border:1px solid #d5dde0;border-radius:5px;overflow:hidden}.design-preview .dp-row{display:grid;grid-template-columns:1fr 1fr 28px;height:18px}.design-preview .dp-row span{border-left:1px solid #d5dde0;border-bottom:1px solid #d5dde0}.design-preview .dp-foot{position:absolute;left:0;right:0;bottom:0;height:24px}.design-preview.d1 .dp-head,.design-preview.d1 .dp-foot{background:linear-gradient(90deg,#2563eb,#0ea5e9)}.design-preview.d1{background:linear-gradient(#fff 70%,#eef7ff)}.design-preview.d2 .dp-head,.design-preview.d2 .dp-foot{background:linear-gradient(90deg,#15803d,#22c55e)}.design-preview.d2{background:linear-gradient(#fff,#effcf3)}.design-preview.d3{background:#111827;color:#fff}.design-preview.d3 .dp-head,.design-preview.d3 .dp-foot{background:#f59e0b}.design-preview.d3 .dp-line{background:#475569}.design-preview.d4 .dp-head{background:linear-gradient(90deg,#f0fdf4,#dcfce7);border-bottom:4px solid #16a34a}.design-preview.d4 .dp-foot{background:linear-gradient(90deg,#166534,#86efac)}.design-preview.d5 .dp-head,.design-preview.d5 .dp-foot{background:linear-gradient(90deg,#0f172a,#0ea5e9)}.design-preview.d5{background:radial-gradient(circle at 85% 15%,#dff6ff,#fff 55%)}.design-name{font-weight:700;margin-top:8px}.design-choice{font-size:12px;color:#64748b;margin-top:3px}.print-save{background:#dc2626!important;color:#fff!important}.print-save:hover{background:#b91c1c!important}
+.design-card{position:relative}.design-card.selected:after{content:"✓ Selected";position:absolute;top:12px;left:12px;background:var(--theme);color:#fff;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:700}.design-preview{height:125px;padding:8px}.design-preview .dp-brand{display:flex;justify-content:space-between;align-items:center;font-size:9px;font-weight:800;margin-bottom:8px}.design-preview .dp-meta{display:flex;gap:5px;margin-bottom:8px}.design-preview .dp-meta i{display:block;width:30px;height:3px;border-radius:5px;background:#cbd5e1}.design-preview .dp-table{font-size:6px}.design-preview .dp-row{grid-template-columns:1.2fr 1fr .45fr;height:15px}.design-preview .dp-row span{display:flex;align-items:center;padding:0 4px}.design-preview .dp-row.head{font-weight:700}.design-preview .dp-total{display:flex;justify-content:flex-end;gap:8px;font-size:7px;margin-top:8px;font-weight:700}.design-preview .dp-foot{height:18px;display:flex;justify-content:space-between;align-items:center;padding:0 10px;font-size:9px;font-weight:700}.design-preview.d1 .dp-row.head{background:#dbeafe}.design-preview.d2 .dp-row.head{background:#dcfce7}.design-preview.d3 .dp-row.head{background:#334155}.design-preview.d3 .dp-brand{color:#fff}.design-preview.d3 .dp-total{color:#fff}.design-preview.d3 .dp-meta i{background:#64748b}.design-preview.d4 .dp-row.head{background:#ecfdf5}.design-preview.d5 .dp-row.head{background:#e0f2fe}.design-preview.d5:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,#dbeafe 60%,#bfdbfe 72%,transparent 72%);opacity:.55;pointer-events:none}.design-preview>*{position:relative;z-index:1}
+
+</style>
+
+<style>
+.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 20% 20%,#1f9d8b 0,#103b38 42%,#071f1d 100%);position:relative;overflow:hidden}
+.login-screen:before,.login-screen:after{content:"";position:absolute;border-radius:50%;filter:blur(2px);opacity:.16}
+.login-screen:before{width:420px;height:420px;background:#fff;top:-180px;right:-120px}.login-screen:after{width:330px;height:330px;background:#49d3bd;bottom:-150px;left:-120px}
+.login-box{position:relative;z-index:1;width:min(420px,94vw);padding:32px 28px;border-radius:24px;background:rgba(255,255,255,.96);box-shadow:0 25px 70px #0005;border:1px solid #ffffff80}
+.login-brand{text-align:center;margin-bottom:24px}.login-logo{width:78px;height:78px;border-radius:22px;background:linear-gradient(145deg,#0f766e,#14b8a6);display:grid;place-items:center;margin:0 auto 13px;box-shadow:0 10px 25px #0f766e55;color:#fff;font-size:38px}
+.login-brand h2{margin:0;font-size:28px;color:#103b38}.login-brand p{margin:6px 0 0;color:#64748b;font-size:13px}
+.login-field{margin-top:14px}.login-field label{color:#334155;margin-bottom:7px}.login-field input{height:48px;border:1px solid #d5dee2;border-radius:12px;padding:0 14px;font-size:15px;outline:none;transition:.2s;background:#f8fafc}.login-field input:focus{border-color:#0f766e;box-shadow:0 0 0 4px #0f766e18;background:#fff}
+.login-btn{width:100%;height:50px;margin-top:20px;border-radius:13px!important;background:linear-gradient(135deg,#0f766e,#14b8a6)!important;color:#fff!important;font-size:16px;font-weight:700;box-shadow:0 8px 20px #0f766e44;transition:.2s}.login-btn:hover{transform:translateY(-1px);box-shadow:0 12px 25px #0f766e55}.login-hint{margin:14px 0 0;text-align:center;font-size:12px;color:#94a3b8}.login-footer{text-align:center;margin-top:18px;color:#64748b;font-size:11px}
+</style>
+
+<style>
+@media(max-width:760px){.invoice-line-item{grid-template-columns:28px 1fr 1fr 1fr 80px 90px 38px!important;font-size:12px}.invoice-line-item>div:nth-child(3){display:none}.invoice-line-item button{padding:2px!important}}
+</style>
+</head><body>
+<div id="login" class="login-screen"><div class="login-box"><div class="login-brand"><div class="login-logo">☀️</div><h2>Samad Solar</h2><p>Solar Shop Management System</p></div>
+<div class="login-field"><label>📱 Mobile Number</label><input id="loginMobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XXXXXXXXX یا +937XXXXXXXXX"></div>
+<div class="login-field" id="otpField" style="display:none"><label>🔢 SMS Verification Code</label><input id="loginOtp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 رقمي کوډ"></div>
+<div class="actions" style="display:flex;gap:8px;flex-wrap:wrap"><button class="login-btn" id="sendOtpBtn" type="button">📩 Send SMS Code</button><button class="login-btn" id="verifyOtpBtn" type="button" style="display:none">✅ Verify & Login</button></div>
+<div style="margin:14px 0;border-top:1px solid #ddd;text-align:center"><span style="position:relative;top:-11px;background:#fff;padding:0 10px;color:#777">یا Gmail</span></div>
+<div class="login-field"><label>📧 Gmail</label><input id="loginEmail" type="email" autocomplete="email" placeholder="example@gmail.com"></div>
+<div class="login-field"><label>🔐 Gmail Password</label><input id="pw" type="password" autocomplete="current-password" placeholder="Password"></div>
+<button class="login-btn" id="loginBtn" type="button">📧 Gmail Login</button>
+<div class="auth-links" style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:12px">
+  <button id="createAccountBtn" type="button" style="border:0;background:none;color:#0f766e;font-weight:700;cursor:pointer">➕ Create New Account</button>
+  <button id="forgotPasswordBtn" type="button" style="border:0;background:none;color:#0f766e;font-weight:700;cursor:pointer">🔑 Forgot Password?</button>
+</div>
+<p class="login-hint" id="loginHint">Mobile ته 6 رقمي SMS Code یا Gmail + Password سره Login وکړئ.</p><div id="authStatus" style="margin-top:8px;font-size:13px;color:#b45309"></div>
+<div id="passwordRecoveryBox" style="display:none;margin-top:14px;padding:14px;border:1px solid #d5dee2;border-radius:12px;background:#f8fafc">
+  <b>🔐 نوی Password</b>
+  <input id="recoveryPassword" type="password" autocomplete="new-password" placeholder="New Password" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;height:44px;border:1px solid #d5dee2;border-radius:10px;padding:0 12px">
+  <input id="recoveryPassword2" type="password" autocomplete="new-password" placeholder="Confirm New Password" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;height:44px;border:1px solid #d5dee2;border-radius:10px;padding:0 12px">
+  <button id="updateRecoveryBtn" type="button" class="login-btn" style="margin-top:10px">✅ Update Password</button>
+</div><div class="login-footer">© Samad Solar</div></div></div>
+<div id="app" style="display:none"><header class="top"><b><img id="topLogo" class="toplogo" style="display:none" src=""> ☀️ <span id="brand">Samad Solar</span></b><span id="clock"></span></header><div class="wrap"><nav><button onclick="page('dash')">🏠 Dashboard</button><button onclick="page('stock')">📦 Stock</button><button onclick="page('buy')">🛒 Purchase</button><button onclick="page('debt')">🤝 Debt / وصول</button><button onclick="page('sell')">💰 Sale</button><button onclick="page('exp')">💸 Expense</button><button onclick="page('report')">📊 Reports</button> <button onclick="page('capital')">💵 Capital</button><button onclick="page('set')">⚙️ Settings</button><button id="backupBtn">💾 Backup</button><button onclick="document.getElementById('file').click()">♻️ Restore</button><button id="logoutBtn">🚪 Logout</button><input id="file" type="file" accept=".json" hidden ></nav><main>
+<section id="dash" class="page on"><h2>Dashboard</h2><div id="low" class="notice" style="display:none"></div><div class="cards"><div class="card">📦 Products<div class="num" id="np">0</div></div><div class="card">📊 Stock<div class="num" id="ns">0</div></div><div class="card">💰 Sales<div class="num" id="sales">$0</div></div><div class="card">🛒 Purchases<div class="num" id="purs">$0</div></div><div class="card">💸 Expenses<div class="num" id="exps">0 AFN</div></div><div class="card">🤝 Debt<div class="num" id="debts">$0</div></div><div class="card">📈 Profit<div class="num" id="profit">$0</div></div></div></section>
+<section id="stock" class="page"><h2>📦 Stock</h2><div class="form"><div class="grid">
+<div><label>Product Name</label><input id="pn" list="stockProductList" autocomplete="off" placeholder="جنس نوم ولیکه یا انتخاب کړه" oninput="fillStockFromHint()"><datalist id="stockProductList"></datalist></div>
+<div><label>Model</label><input id="pm" placeholder="Model"></div>
+<div><label>Category</label><input id="pc" placeholder="Category"></div>
+<div><label>Buy Rate USD</label><input id="pb" type="number" min="0" step="0.01"></div>
+<div><label>Quantity</label><input id="pq" type="number" min="0" value="0"></div>
+<div><label>Low Quantity</label><input id="pl" type="number" min="0" value="2"></div>
+<div><label>Date & Time</label><input id="stockDateTime" type="datetime-local"></div>
+</div><div class="actions"><button class="primary" onclick="addP()">➕ Add / Update Stock</button></div>
+<p class="pill">ℹ️ که جنس د Purchase له لارې اخیستل شوی وي او پیسې له سرمایې څخه ورکړل شوې وي، Capital کمیږي؛ یوازې د Stock ثبتول خپله Capital نه کموي.</p></div>
+<table><thead><tr><th>Date & Time</th><th>Name</th><th>Model</th><th>Category</th><th>Buy Rate</th><th>Quantity</th><th>Low</th><th>Actions</th></tr></thead><tbody id="st"></tbody></table></section>
+<section id="buy" class="page"><h2>🛒 Purchase / Import Shipment</h2>
+<div class="notice">📦 د China → Afghanistan عادي بار لپاره <b>CBM</b> اصلي معیار دی. د هر جنس لپاره د <b>ټول Qty CBM</b> یو ځل لیکل کېږي؛ مثلاً 50 دانې که یو قلم وي، د 50 دانو ټول CBM یو ځای ولیکه.</div>
+<div class="form"><h3>1️⃣ د بار / Shipment معلومات</h3><div class="grid">
+<div><label>Allocation Method</label><select id="allocMethod" onchange="toggleAlloc()"><option value="cbm">CBM — عادي بار</option><option value="weight">Weight KG — دروند بار</option><option value="mixed">CBM + Weight</option></select></div>
+<div id="cbmRateWrap"><label>CBM Rate USD / CBM</label><input id="cbmRate" type="number" min="0" step="0.01" placeholder="مثلاً 350"></div>
+<div id="weightRateWrap" style="display:none"><label>Weight Rate USD / KG</label><input id="weightRate" type="number" min="0" step="0.01" placeholder="مثلاً 2.5"></div>
+<div><label>Base Shipping Expense USD</label><input id="baseShipExpense" type="number" min="0" value="0" placeholder="که Rate کاروې، اتومات محاسبه کېږي"></div>
+<div><label>Purchase Date</label><input id="purchaseDate" type="date"></div>
+<div><label>اضافي مصارف شته؟ (اختیاري)</label><select id="hasExtra" onchange="toggleExtra()"><option value="no">نه</option><option value="yes">هو</option></select></div>
+<div id="extraWrap" style="display:none"><label>ټول اضافي مصارف USD</label><input id="extraExpense" type="number" min="0" step="0.01" value="0" placeholder="مثلاً 2333"></div></div>
+<div id="mixedControls" class="grid" style="display:none;margin-top:10px"><div><label>CBM Share %</label><input id="cbmPct" type="number" min="0" max="100" value="70"></div><div><label>Weight Share %</label><input id="weightPct" type="number" min="0" max="100" value="30"></div></div>
+<h3>2️⃣ د جنس بشپړ مشخصات</h3><div class="grid">
+<div><label>Product Name</label><input id="buyName" list="purchaseProductList" autocomplete="off" placeholder="جنس نوم ولیکه یا له لیست څخه انتخاب کړه"><datalist id="purchaseProductList"></datalist></div><div><label>Model</label><input id="buyModel"></div><div><label>Category</label><input id="buyCat"></div><div><label>Supplier</label><input id="buySupplier"></div>
+<div><label>Quantity</label><input id="buyQty" type="number" min="1" value="1"></div><div><label>Unit Buy USD</label><input id="buyUnit" type="number" min="0" step="0.01"></div>
+<div><label>Total CBM for this Item</label><input id="buyCbm" type="number" min="0" step="0.0001" placeholder="د ټول Qty CBM"></div><div><label>Total Weight KG for this Item</label><input id="buyWeight" type="number" min="0" step="0.01" placeholder="د ټول Qty وزن"></div></div>
+<div class="actions"><button class="primary" onclick="addPurchaseLine()">➕ Add Item</button></div><div id="purchaseLines" style="margin-top:12px"></div><div class="actions"><button class="primary" onclick="savePurchaseShipment()">💾 Save Shipment & Calculate Landed Cost</button></div></div>
+<div id="purchaseSummary" class="cards" style="margin-top:12px"></div>
+<table><thead><tr><th>Date</th><th>Product / Model / Category</th><th>Supplier</th><th>Qty</th><th>Unit Buy</th><th>Total CBM</th><th>Total KG</th><th>Allocated Expense</th><th>Landed Total</th><th>Landed / Unit</th><th>Details</th></tr></thead><tbody id="bt"></tbody></table></section>
+<section id="sell" class="page"><h2>💰 Sale</h2>
+<div class="form">
+ <div class="grid">
+  <div><label>Customer Name</label><input id="sc" placeholder="د مشتری نوم"></div>
+  <div><label>Customer WhatsApp</label><input id="scPhone" placeholder="937XXXXXXXX" onblur="checkPreviousDebt()"></div>
+  <div><label>Customer Province <b style="color:#c00">*</b></label><select id="scProvince" required onchange="updateCustomerDistricts()"><option value="">Select Province</option></select></div>
+  <div><label>District / Center <b style="color:#c00">*</b></label><select id="scDistrict" required onchange="syncCustomerAddress()"><option value="">Select Province First</option></select></div>
+  <input id="scAddress" type="hidden">
+  <div id="oldDebtWarning" class="notice" style="display:none;grid-column:1/-1"></div>
+  <div id="externalItemsList" style="display:none;grid-column:1/-1;margin-top:12px"></div>
+  <div id="stockSelectWrap" style="grid-column:1/-1"><label>Product + Model</label><select id="saleStockSelect" onchange="selectSaleStock()"><option value="">— له موجود Stock څخه جنس انتخاب کړه —</option></select><small style="display:block;color:#666;margin-top:5px">یوازې هغه Product + Model چې په Stock کې موجود Qty لري دلته ښکاري.</small></div>
+  <div id="externalProductWrap" style="display:none"><label>Product</label><input id="externalProduct" placeholder="د بل چا جنس"></div>
+  <div id="externalModelWrap" style="display:none"><label>Model</label><input id="externalModel" placeholder="Model"></div>
+  <input id="sp" type="hidden" value="">
+  <input id="sm" type="hidden" value="">
+  <div><label>Qty</label><input id="sq" type="number" value="1" min="1"></div>
+  <div><label>Unit Sell USD</label><input id="sprice" type="number" min="0" step="0.01" placeholder="Sell Rate"></div>
+  <div><label>Paid Amount USD</label><input id="paidAmount" type="number" min="0" value="0"><small id="paidAmountHint" style="display:block;color:#666;margin-top:4px">Invoice Total به دلته په اوتومات ډول راشي.</small></div>
+  <div id="externalFields" style="display:none"><label>د بل چا نوم</label><input id="supplierName" placeholder="د جنس مالک / پلورونکی"></div>
+  <div id="externalCostWrap" style="display:none"><label>Unit Cost USD</label><input id="scost" type="number" min="0" step="0.01" placeholder="Cost Rate"></div>
+ </div>
+ <input id="saleType" type="hidden" value="stock">
+ <div id="stockSaleHint" class="pill" style="margin-top:10px">📦 Product او Model د خپل Stock څخه انتخاب کړه؛ Buy Rate له Stock څخه اتومات راځي او Qty له Stock څخه کمېږي.</div>
+ <div id="externalSaleHint" class="pill" style="display:none;margin-top:10px">📦 د بل چا جنس به ستا Stock نه کموي؛ یوازې د هغه جنس ګټه ثبتېږي.</div>
+ <div id="invoiceAddStatus" class="pill" style="display:none;margin-top:8px"></div>
+ <div class="actions"><button id="addItemBtn" class="primary" onclick="sell()">➕ Add Item to Invoice</button> <button type="button" class="print-save" onclick="printSaveInvoice()">🖨️ Save & Print Invoice</button> <button type="button" id="addExternalBtn" class="secondary" onclick="openExternalSale()">➕ د بل چا جنس +</button></div>
+</div>
+<table><thead><tr><th>Date</th><th>Customer</th><th>Product</th><th>Qty</th><th>Cost Unit</th><th>Sell Unit</th><th>Total Sale</th><th>Profit</th><th>Source</th><th>Actions</th></tr></thead><tbody id="st2"></tbody></table></section>
+<section id="exp" class="page"><h2>💸 Expense (AFN)</h2><div class="form"><div class="grid"><div><label>Title</label><input id="et"></div><div><label>Amount AFN</label><input id="ea" type="number"></div></div><div class="actions"><button class="primary" id="expenseBtn">Save</button></div></div><table><thead><tr><th>Date</th><th>Title</th><th>Amount</th><th>Action</th></tr></thead><tbody id="etab"></tbody></table></section>
+<section id="debt" class="page"><h2>🤝 Debt / وصول</h2><div class="form"><div class="pill">✅ Debt دلته یوازې د Sale/Invoice څخه په اتومات ډول راځي. که Invoice بشپړ Paid وي، Debt ته نه راځي. که Partial یا Unpaid وي، پاتې مبلغ، Invoice او د وصول تاریخچه ورسره ساتل کېږي.</div><div class="pill" style="margin-top:8px">💰 هره وصول: نېټه، دقیق وخت، مقدار، Payment Method، او د چا په لاس وصول شوه — ټول جلا ثبتېږي.</div></div><table><thead><tr><th>Date/Time</th><th>Customer</th><th>Invoice</th><th>Total</th><th>Paid</th><th>Remaining</th><th>Actions</th></tr></thead><tbody id="dtab"></tbody></table></section>
+<section id="report" class="page"><h2>📊 Reports</h2><div class="form"><div class="grid"><div><label>From</label><input id="rFrom" type="date"></div><div><label>To</label><input id="rTo" type="date"></div></div><div class="actions"><button class="primary" onclick="makeReport()">Generate Report</button></div></div><div class="cards" id="rc"></div><div class="form" style="margin-top:12px"><button class="primary" onclick="backup()">Download Backup</button></div></section>
+<section id="set" class="page"><h2>⚙️ Settings</h2><div class="form"><label>Shop Logo</label><input id="logoFile" type="file" accept="image/*"><img id="logoPreview" class="logo" style="display:none;margin-top:8px"><p style="font-size:12px;color:#666">همدا لوگو به د اپ په سر او د فاکتور په منځ کې Watermark وي.</p></div><div class="form"><label>Shop Name</label><input id="sn"><label>Shop Address</label><input id="saddr" placeholder="دکان ادرس"><label>Digital Number</label><input id="snum" placeholder="0700XXXXXX"><label>WhatsApp Number</label><input id="swa" placeholder="937XXXXXXXX"><label>Currency</label><select id="cur"><option>USD</option><option>AFN</option><option>PKR</option></select><label>Invoice Number Prefix</label><input id="invoicePrefix" maxlength="12" placeholder="مثلاً SMD یا NHP"><small style="display:block;color:#666;margin:4px 0 8px">د Invoice نمبر به داسې وي: SMD-001, SMD-002 ...</small><label>System Color</label><input id="themeColor" type="color" value="#0f766e"><label>Invoice Design — یو ډیزاین په کوچني Preview کې انتخاب کړه</label><input id="invoiceDesign" type="hidden" value="1"><div id="invoiceDesignGrid" class="invoice-design-grid"></div><div class="actions"><button class="primary" id="settingsBtn">Save Settings</button></div></div><div class="form" style="margin-top:12px"><h3>🕔 د پنجشنبې د قرض یادونه</h3><p>هره پنجشنبه چې اپ خلاص شي، د قرضدارانو لپاره د WhatsApp مسجونه چمتو کېږي. د WhatsApp امنیت له امله مسج په خپله Send کېدای نه شي؛ یوازې د Send تڼۍ وهلو ته اړتیا لري.</p><div id="thursdayReminder"></div></div><div class="form" style="margin-top:12px"><h3>🔐 Security Code</h3><p style="font-size:12px;color:#666">دا کوچنی PIN د امنیتي تنظیماتو لپاره دی. د PIN بدلول او Capital ته داخلېدل د Verification Code له لارې هم تاییدېږي.</p><label>Security Code</label><input id="securityCode" type="password" placeholder="مثلاً 786"><div class="actions"><button class="primary" id="saveSecurityBtn">Save Security Code</button></div></div><div class="form" style="margin-top:12px"><h3>Change Login</h3><label>Username</label><input id="nu"><label>Password</label><input id="npw" type="password"><div class="actions"><button id="changeLoginBtn">Change</button></div></div></section>
+
+<section id="capital" class="page">
+<h2>💵 Capital</h2>
+<div class="form">
+ <div class="grid">
+  <div><label>Capital USD</label><input id="capUSD" type="number"></div>
+  <div><label>Capital AFN</label><input id="capAFN" type="number"></div>
+  <div><label>Capital PKR</label><input id="capPKR" type="number"></div>
+ </div>
+ <div class="actions"><button class="primary" id="saveCapBtn">Save Capital</button></div>
+</div>
+<div class="cards">
+ <div class="card">USD<div class="num" id="capShowUSD">$0</div></div>
+ <div class="card">AFN<div class="num" id="capShowAFN">0 AFN</div></div>
+ <div class="card">PKR<div class="num" id="capShowPKR">0 PKR</div></div>
+</div>
+</section>
+</main></div></div>
+
+
+<div id="receiveModal" class="modal">
+ <div class="modalbox">
+  <h3>💵 د قرض وصول</h3>
+  <div id="receiveCustomer" class="pill"></div>
+  <div class="grid" style="margin-top:10px">
+   <div><label>وصول شوې پیسې USD</label><input id="receiveAmount" type="number" min="0" step="0.01" placeholder="مثلاً 20"></div>
+   <div><label>Payment Method</label><select id="receiveMethod"><option>Cash</option><option>Bank</option><option>Other</option></select></div>
+   <div><label>د چا په لاس وصول شوې؟</label><input id="receiveBy" placeholder="نوم"></div>
+   <div><label>یادښت</label><input id="receiveNote" placeholder="اختیاري"></div>
+  </div>
+  <div class="toolbar" style="margin-top:12px">
+   <button class="primary" onclick="saveDebtPayment()">💾 ثبت وصول</button>
+   <button class="secondary" onclick="closeReceiveModal()">بندول</button>
+  </div>
+ </div>
+</div>
+
+<div id="deleteModal" class="modal" aria-hidden="true">
+ <div class="modalbox" style="max-width:430px">
+  <h3 id="deleteTitle">🗑️ Delete</h3>
+  <div id="deleteMessage" class="pill" style="margin:10px 0"></div>
+  <div id="deletePinStep">
+   <label>🔐 Security PIN</label>
+   <input id="deletePinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN ولیکه">
+   <div class="toolbar" style="margin-top:12px">
+    <button type="button" class="primary" id="deletePinBtn">Continue</button>
+    <button type="button" class="secondary" id="deleteCancelBtn">Cancel</button>
+   </div>
+  </div>
+  <div id="deleteConfirmStep" style="display:none">
+   <div class="notice">⚠️ ډاډه یې چې دا معلومات حذف کول غواړې؟</div>
+   <div class="toolbar" style="margin-top:12px">
+    <button type="button" class="danger" id="deleteYesBtn">Yes — Delete</button>
+    <button type="button" class="secondary" id="deleteNoBtn">No</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<div id="invoiceModal" class="modal">
+ <div class="modalbox">
+  <div class="toolbar no-print">
+   <button class="primary" onclick="window.print()">🖨️ Print / PDF</button>
+   <button class="secondary" onclick="shareInvoice()">📱 WhatsApp</button>
+   <button class="secondary" onclick="closeInvoice()">Close</button>
+  </div>
+  <div id="invoiceContent" class="invoice"></div>
+ </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* SUPABASE CONNECTION — publishable key only. Never put the secret/service_role key here. */
+const SUPABASE_URL="https://nprlzuqxkwfuloeosxqs.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_OucE5RDgqW1EjIaDy3Ea-A_QkRPKyfP";
+const supabaseClient=window.supabase?.createClient
+  ? window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY)
+  : null;
+const $=id=>document.getElementById(id);
+const KEY="samad-solar-v3";
+let pendingExternalItems=[];
+let invoiceCart=[];
+let db=JSON.parse(localStorage.getItem(KEY)||"null")||{user:"admin",pass:"1234",name:"Samad Solar",address:"",digital:"",whatsapp:"",products:[],buys:[],sells:[],exps:[],debts:[],capital:{usd:0,afn:0,pkr:0},logo:"",securityCode:"786",themeColor:"#0f766e",invoiceDesign:1,invoicePrefix:"SMD",invoiceSeq:0,stockCategories:["Batt","Solar","Inverter"]};
+db=Object.assign({user:"admin",email:"",mobile:"",pass:"1234",name:"Samad Solar",address:"",digital:"",whatsapp:"",products:[],buys:[],sells:[],exps:[],debts:[],capital:{usd:0,afn:0,pkr:0},logo:"",securityCode:"786",themeColor:"#0f766e",invoiceDesign:1,invoicePrefix:"SMD",invoiceSeq:0,stockCategories:["Batt","Solar","Inverter"]},db);
+db.products=db.products||[];db.buys=db.buys||[];db.sells=db.sells||[];db.exps=db.exps||[];db.debts=db.debts||[];db.debts.forEach(d=>{d.total=d.total??d.a??0;d.paid=d.paid??0;d.payments=d.payments||[];});db.capital=Object.assign({usd:0,afn:0,pkr:0},db.capital||{});db.securityCode=db.securityCode||"786";
+function saveDB(){localStorage.setItem(KEY,JSON.stringify(db));render();refreshStockHints()}
+function normalizePhone(v){let x=String(v||"").trim().replace(/[\s()-]/g,"");if(x.startsWith("00"))x="+"+x.slice(2);if(x.startsWith("0"))x="+93"+x.slice(1);else if(/^93\d{9}$/.test(x))x="+"+x;return x;}
+function openAppAfterAuth(){$("login").style.display="none";$('app').style.display="block";render();}
+async function sendPhoneOtp(){if(!supabaseClient)return alert("❌ Supabase Client نه دی فعال.");let phone=normalizePhone($("loginMobile").value);if(!/^\+93\d{9}$/.test(phone))return alert("❌ د افغانستان موبایل نمبر سم ولیکه. مثال: 0791234567 یا +93791234567");$("authStatus").textContent="⏳ SMS Code لېږل کېږي...";let {error}=await supabaseClient.auth.signInWithOtp({phone});if(error){$("authStatus").textContent="❌ "+error.message;return;}$("otpField").style.display="block";$("verifyOtpBtn").style.display="inline-block";$("sendOtpBtn").textContent="🔄 Resend Code";$("authStatus").textContent="✅ 6 رقمي Code ستا موبایل ته ولېږل شو.";$("loginOtp").focus();}
+async function verifyPhoneOtp(){if(!supabaseClient)return alert("❌ Supabase Client نه دی فعال.");let phone=normalizePhone($("loginMobile").value),token=$("loginOtp").value.trim();if(!/^\+93\d{9}$/.test(phone))return alert("❌ موبایل نمبر سم نه دی.");if(!/^\d{6}$/.test(token))return alert("❌ 6 رقمي OTP Code ولیکه.");$("authStatus").textContent="⏳ Code تاییدېږي...";let {error}=await supabaseClient.auth.verifyOtp({phone,token,type:"sms"});if(error){$("authStatus").textContent="❌ "+error.message;return;}db.mobile=phone;saveDB();openAppAfterAuth();}
+async function login(){if(!supabaseClient)return alert("❌ Supabase Client نه دی فعال.");let email=$("loginEmail").value.trim().toLowerCase(),pass=$("pw").value;if(!email||!pass)return alert("❌ Gmail او Password ولیکه.");$("authStatus").textContent="⏳ Gmail Login...";let {error}=await supabaseClient.auth.signInWithPassword({email,password:pass});if(error){$("authStatus").textContent="❌ "+error.message;return;}db.email=email;saveDB();openAppAfterAuth();}
+
+async function createNewAccount(){
+  if(!supabaseClient)return alert("❌ Supabase Client نه دی فعال.");
+  const email=$("loginEmail").value.trim().toLowerCase();
+  const pass=$("pw").value;
+  if(!email)return alert("❌ لومړی Gmail ولیکه.");
+  if(!/^\S+@\S+\.\S+$/.test(email))return alert("❌ Gmail/Email سم ولیکه.");
+  if(!pass || pass.length<6)return alert("❌ Password لږ تر لږه 6 توري/شمېرې وي.");
+  $("authStatus").textContent="⏳ نوی Account جوړېږي...";
+  const redirect=(location.protocol==="http:"||location.protocol==="https:")?location.href:undefined;
+  const options=redirect?{emailRedirectTo:redirect}:{};
+  const {data,error}=await supabaseClient.auth.signUp({email,password:pass,options});
+  if(error){$("authStatus").textContent="❌ "+error.message;return;}
+  if(data?.session){db.email=email;saveDB();openAppAfterAuth();return;}
+  $("authStatus").textContent="✅ Account جوړ شو. خپل Gmail خلاص کړه او د Confirmation لینک تایید کړه، بیا Login وکړه.";
+}
+
+async function forgotPassword(){
+  if(!supabaseClient)return alert("❌ Supabase Client نه دی فعال.");
+  const email=$("loginEmail").value.trim().toLowerCase();
+  if(!email)return alert("❌ لومړی خپل Gmail ولیکه.");
+  if(!/^\S+@\S+\.\S+$/.test(email))return alert("❌ Gmail/Email سم ولیکه.");
+  $("authStatus").textContent="⏳ Password reset لینک لېږل کېږي...";
+  const redirect=(location.protocol==="http:"||location.protocol==="https:")?location.href:undefined;
+  const options=redirect?{redirectTo:redirect}:{};
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,options);
+  if(error){$("authStatus").textContent="❌ "+error.message;return;}
+  $("authStatus").textContent="✅ که دا Gmail په سیستم کې وي، د Password reset لینک به ورته ولېږل شي. Gmail/Spam وګوره.";
+}
+
+function showPasswordRecovery(){
+  let box=$("passwordRecoveryBox");
+  if(box)box.style.display="block";
+}
+
+async function updateRecoveredPassword(){
+  if(!supabaseClient)return;
+  const p=$("recoveryPassword").value;
+  const c=$("recoveryPassword2").value;
+  if(!p||p.length<6)return alert("❌ نوی Password لږ تر لږه 6 توري/شمېرې وي.");
+  if(p!==c)return alert("❌ دواړه Passwordونه یو شان نه دي.");
+  const {error}=await supabaseClient.auth.updateUser({password:p});
+  if(error){$("authStatus").textContent="❌ "+error.message;return;}
+  $("authStatus").textContent="✅ Password بدل شو. اوس نوی Password سره Login وکړه.";
+  $("passwordRecoveryBox").style.display="none";
+  $("pw").value=p;
+}
+
+function page(id){document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));if($(id))$(id).classList.add("on");render()}
+function show(id){return page(id)}
+function addP(){let n=$("pn").value.trim(),m=$("pm").value.trim();if(!n)return alert("Product Name ولیکه.");let d={model:m,cat:$("pc").value.trim(),b:+$("pb").value||0,q:+$("pq").value||0,l:+$("pl").value||2,updatedAt:$("stockDateTime").value||new Date().toISOString()};let p=db.products.find(x=>x.n.toLowerCase()===n.toLowerCase()&&String(x.model||"").toLowerCase()===m.toLowerCase());if(p)Object.assign(p,d);else db.products.push({n,...d});saveDB();["pn","pm","pc","pb"].forEach(x=>$(x).value="");$("pq").value=0;$("pl").value=2;$("stockDateTime").value=new Date().toISOString().slice(0,16)}
+let purchaseLines=[];
+function toggleAlloc(){let m=$("allocMethod").value;$("mixedControls").style.display=m==="mixed"?"grid":"none";$("cbmRateWrap").style.display=(m==="cbm"||m==="mixed")?"block":"none";$("weightRateWrap").style.display=(m==="weight"||m==="mixed")?"block":"none"}
+function toggleExtra(){$("extraWrap").style.display=$("hasExtra").value==="yes"?"block":"none"}
+function refreshStockHints(){let dl=$("stockProductList");if(!dl)return;let seen=new Set();dl.innerHTML=db.products.map(x=>{let key=(x.n||"")+"|"+(x.model||"");if(seen.has(key))return"";seen.add(key);return `<option value="${esc(x.n)}" label="${esc((x.model||"")+" | "+(x.cat||""))}"></option>`}).join("")}
+function fillStockFromHint(){let n=$("pn").value.trim().toLowerCase();let p=db.products.find(x=>x.n.toLowerCase()===n);if(!p)return;$("pm").value=p.model||"";$("pc").value=p.cat||"";$("pb").value=p.b||""}
+function refreshPurchaseHints(){let dl=$("purchaseProductList");if(!dl)return;let names=[...db.products.map(x=>x.n),...db.buys.map(x=>x.n)].filter(Boolean);let seen=new Set();dl.innerHTML=names.filter(n=>{let k=n.toLowerCase();if(seen.has(k))return false;seen.add(k);return true}).map(n=>`<option value="${esc(n)}"></option>`).join("")}
+function fillPurchaseFromHint(){let n=$("buyName").value.trim().toLowerCase();if(!n)return;let p=db.products.find(x=>(x.n||"").toLowerCase()===n);let b=[...db.buys].reverse().find(x=>(x.n||"").toLowerCase()===n);let x=p||b;if(!x)return;if(x.model)$("buyModel").value=x.model;if(x.cat)$("buyCat").value=x.cat;if(p&&p.b!=null&&$("buyUnit").value==="")$("buyUnit").value=p.b;else if(b&&b.landedUnit!=null&&$("buyUnit").value==="")$("buyUnit").value=b.landedUnit}
+function addPurchaseLine(){let n=$("buyName").value.trim(),q=+$('buyQty').value||0,u=+$('buyUnit').value||0,c=+$('buyCbm').value||0,w=+$('buyWeight').value||0,m=$("allocMethod").value;if(!n||q<=0||u<0)return alert("Product، Quantity او Unit Buy Rate سم کړه.");if(m!=="weight"&&c<=0)return alert("د دې جنس د ټول Quantity لپاره Total CBM ولیکه.");if(m!=="cbm"&&w<=0)return alert("د دې جنس د ټول Quantity لپاره Total Weight ولیکه.");purchaseLines.push({n,model:$("buyModel").value.trim(),cat:$("buyCat").value.trim(),supplier:$("buySupplier").value.trim(),q,u,cbm:c,kg:w});renderPurchaseLines();["buyName","buyModel","buyCat","buySupplier","buyUnit","buyCbm","buyWeight"].forEach(x=>$(x).value="");$("buyQty").value=1}
+function renderPurchaseLines(){let b=$("purchaseLines");b.innerHTML=purchaseLines.length?"<table><tr><th>Product</th><th>Model</th><th>Category</th><th>Supplier</th><th>Qty</th><th>Unit Buy</th><th>Total CBM</th><th>Total KG</th><th></th></tr>"+purchaseLines.map((x,i)=>`<tr><td>${esc(x.n)}</td><td>${esc(x.model)}</td><td>${esc(x.cat)}</td><td>${esc(x.supplier)}</td><td>${x.q}</td><td>$${x.u.toLocaleString()}</td><td>${x.cbm}</td><td>${x.kg}</td><td><button class="danger" onclick="purchaseLines.splice(${i},1);renderPurchaseLines()">حذف</button></td></tr>`).join("")+"</table>":"<div class='pill'>تر اوسه جنس نه دی اضافه شوی.</div>"}
+function savePurchaseShipment(){if(!purchaseLines.length)return alert("لږ تر لږه یو جنس اضافه کړه.");let m=$("allocMethod").value,cr=+$('cbmRate').value||0,wr=+$('weightRate').value||0,base=+$('baseShipExpense').value||0,extra=$("hasExtra").value==="yes"?(+$('extraExpense').value||0):0,ct=purchaseLines.reduce((a,x)=>a+x.cbm,0),wt=purchaseLines.reduce((a,x)=>a+x.kg,0),calculatedBase=0;if(m==="cbm"){if(ct<=0)return alert("ټول CBM صفر دی.");if(cr<=0&&base<=0)return alert("CBM Rate USD/CBM ولیکه یا Base Expense ورکړه.");calculatedBase=cr>0?ct*cr:base}else if(m==="weight"){if(wt<=0)return alert("ټول Weight صفر دی.");if(wr<=0&&base<=0)return alert("Weight Rate USD/KG ولیکه یا Base Expense ورکړه.");calculatedBase=wr>0?wt*wr:base}else{if(ct<=0||wt<=0)return alert("Mixed mode کې ټول CBM او ټول Weight باید موجود وي.");let cp=(+$('cbmPct').value||0)/100,wp=(+$('weightPct').value||0)/100;if(Math.abs(cp+wp-1)>.001)return alert("CBM% او Weight% باید 100% شي.");calculatedBase=(cr>0?ct*cr:base*cp)+(wr>0?wt*wr:base*wp)}let totalExpense=calculatedBase+extra,date=$("purchaseDate").value||new Date().toISOString().slice(0,10),sid=Date.now();purchaseLines.forEach(x=>{let a=m==="cbm"?(x.cbm/ct)*totalExpense:m==="weight"?(x.kg/wt)*totalExpense:totalExpense*(+$('cbmPct').value||0)/100*(x.cbm/ct)+totalExpense*(+$('weightPct').value||0)/100*(x.kg/wt),pt=x.q*x.u,lt=pt+a,lu=lt/x.q,p=db.products.find(z=>z.n.toLowerCase()===x.n.toLowerCase()&&String(z.model||"").toLowerCase()===String(x.model||"").toLowerCase());if(p){p.b=lu;p.q+=x.q;p.cat=x.cat||p.cat;p.model=x.model||p.model;p.updatedAt=new Date().toISOString()}else db.products.push({n:x.n,cat:x.cat,b:lu,q:x.q,l:2,model:x.model,updatedAt:new Date().toISOString()});db.buys.push({date,n:x.n,model:x.model,cat:x.cat,supplier:x.supplier,q:x.q,total:pt,allocated:a,landedTotal:lt,landedUnit:lu,method:m,shipmentId:sid,cbm:x.cbm,kg:x.kg,baseExpense:calculatedBase,extraExpense:extra,cbmRate:cr,weightRate:wr})});saveDB();purchaseLines=[];renderPurchaseLines();$("purchaseSummary").innerHTML=`<div class="card">CBM Rate<div class="num">$${cr.toLocaleString()} / CBM</div></div><div class="card">Base Shipping<div class="num">$${calculatedBase.toLocaleString()}</div></div><div class="card">Extra Expenses<div class="num">$${extra.toLocaleString()}</div></div><div class="card">Total Import Expense<div class="num">$${totalExpense.toLocaleString()}</div></div><div class="card">Total CBM<div class="num">${ct.toFixed(4)}</div></div><div class="card">Total Weight<div class="num">${wt.toFixed(2)} KG</div></div>`;alert("✅ Shipment محفوظ شو. ټول اضافي مصارف په Landed Cost کې اضافه شول.")}
+
+function refreshSaleCategories(){ refreshSaleProducts(); }
+function refreshSaleProducts(){
+ let sel=$("saleStockSelect"); if(!sel)return;
+ let current=sel.value;
+ let items=db.products.filter(x=>Number(x.q||0)>0);
+ sel.innerHTML='<option value="">— له موجود Stock څخه جنس انتخاب کړه —</option>'+items.map((x)=>{
+   let idx=db.products.indexOf(x);
+   return `<option value="${idx}">${esc(x.n||"")} — ${esc(x.model||"No Model")} — Stock: ${Number(x.q||0)}</option>`;
+ }).join('');
+ if(current && [...sel.options].some(o=>o.value===current))sel.value=current; else sel.value="";
+}
+function selectSaleStock(){
+ let sel=$("saleStockSelect"), i=Number(sel.value);
+ if(!sel.value || !db.products[i]){ $("sp").value=""; $("sm").value=""; return; }
+ let p=db.products[i];
+ $("sp").value=p.n||""; $("sm").value=p.model||"";
+ if($("sprice"))$("sprice").focus();
+}
+function fillSaleFromHint(){selectSaleStock();}
+function openExternalSale(){
+  if($("saleType").value==="external"){ $("saleType").value="stock"; toggleSaleType(); return; }
+  $("saleType").value="external";
+  toggleSaleType();
+  $("sp").focus();
+}
+
+function toggleExternalSale(){let on=$("saleType").value==="external";toggleSaleType();if(on&&$("sp").value)$("scost").focus()}
+function toggleSaleType(){let ext=$("saleType").value==="external";$("stockSelectWrap").style.display=ext?"none":"block";$("externalProductWrap").style.display=ext?"block":"none";$("externalModelWrap").style.display=ext?"block":"none";$("externalFields").style.display=ext?"block":"none";$("externalCostWrap").style.display=ext?"block":"none";$("externalSaleHint").style.display=ext?"block":"none";$("stockSaleHint").style.display=ext?"none":"block";$("addExternalBtn").style.display="inline-block";$("addExternalBtn").textContent=ext?"↩️ خپل Stock ته ستن شه":"➕ د بل چا جنس +";if(!ext){pendingExternalItems=[];$("supplierName").value="";$("scost").value="";}renderPendingExternal();}
+function addExternalItem(){
+ let name=$("externalProduct").value.trim(),model=$("externalModel").value.trim(),q=+$('sq').value||0,pr=+$('sprice').value||0,cost=+$('scost').value||0,supplier=$("supplierName").value.trim();
+ if(!name||q<=0||pr<=0||cost<=0)return alert("د بل چا جنس لپاره Product، Model، Qty، Sell Rate او Cost Rate بشپړ کړه.");
+ pendingExternalItems.push({n:name,model:model,q:q,unitSell:pr,unitCost:cost,supplier:supplier});
+ renderPendingExternal();
+ ["sp","sm","sprice","scost","supplierName"].forEach(id=>$(id).value="");$("sq").value=1;$("sp").focus();
+}
+function showInvoiceAddStatus(name,model,q){
+ const box=$("invoiceAddStatus");
+ if(box){box.style.display="block";box.innerHTML=`✅ <b>${esc(name)}</b>${model?` — ${esc(model)}`:""} × ${q} د Invoice ته اضافه شول. ټول جنسونه: <b>${invoiceCart.length}</b>`;}
+ const btn=$("addItemBtn");
+ if(btn){const old=btn.innerHTML;btn.innerHTML="✅ Item Added to Invoice";btn.disabled=true;setTimeout(()=>{btn.innerHTML=old;btn.disabled=false},1200);}
+}
+
+function renderPendingExternal(){
+  updatePaidAmountFromInvoice();
+  const box=$('externalItemsList');
+  if(!box)return;
+  if(!invoiceCart.length){
+    box.style.display='none';
+    box.innerHTML='';
+    return;
+  }
+  box.style.display='block';
+  const grand=invoiceCart.reduce((a,x)=>a+Number(x.total||0),0);
+  let html=`<div style="border:2px solid var(--theme);border-radius:12px;background:#fff;overflow:hidden;margin-bottom:10px">
+    <div style="background:var(--theme);color:#fff;padding:9px 12px;font-weight:700;display:flex;justify-content:space-between;align-items:center">
+      <span>🧾 Invoice Items</span><span>${invoiceCart.length} جنس | ټول: $${grand.toLocaleString(undefined,{maximumFractionDigits:2})}</span>
+    </div>
+    <div style="overflow-x:auto">
+    <table style="margin:0;width:100%;min-width:760px;background:#fff">
+      <thead><tr><th>#</th><th>Product</th><th>Model</th><th>Qty</th><th>Unit Rate</th><th>Total</th></tr></thead><tbody>`;
+  invoiceCart.forEach((x,i)=>{
+    html+=`<tr>
+      <td><b>${i+1}</b></td>
+      <td><b>${esc(x.n)}</b></td>
+      <td>${esc(x.model||'—')}</td>
+      <td><div class="qty-control" style="justify-content:center"><button type="button" onclick="changeInvoiceQty(${i},-1)">−</button><b style="min-width:24px;text-align:center">${x.q}</b><button type="button" onclick="changeInvoiceQty(${i},1)">+</button><span>pcs</span></div></td>
+      <td>$${Number(x.unitSell||0).toLocaleString(undefined,{maximumFractionDigits:2})}</td>
+      <td><b>$${Number(x.total||0).toLocaleString(undefined,{maximumFractionDigits:2})}</b></td>
+    </tr>`;
+  });
+  html+=`</tbody></table></div></div>`;
+  box.innerHTML=html;
+}
+
+function changeInvoiceQty(i,delta){let x=invoiceCart[i];if(!x)return;let nq=Number(x.q||0)+delta;if(nq<1)return;if(!x.external){let p=db.products.find(z=>(z.n||"").toLowerCase()===(x.n||"").toLowerCase()&&String(z.model||"").toLowerCase()===String(x.model||"").toLowerCase());if(!p)return;if(nq>Number(p.q||0))return alert(`Stock کافي نه دی. موجود: ${p.q}`);let other=invoiceCart.reduce((a,z,j)=>a+(j!==i&&!z.external&&(z.n||"").toLowerCase()===(x.n||"").toLowerCase()&&String(z.model||"").toLowerCase()===String(x.model||"").toLowerCase()?Number(z.q||0):0),0);if(nq+other>Number(p.q||0))return alert(`Stock کافي نه دی. موجود: ${p.q}`);}x.q=nq;x.total=x.q*Number(x.unitSell||0);x.cost=x.q*Number(x.unitCost||0);x.profit=x.total-x.cost;renderPendingExternal();}
+function changeInvoicePrice(i,val){let x=invoiceCart[i],price=Number(val);if(!x||!Number.isFinite(price)||price<0)return; x.unitSell=price;x.total=x.q*price;x.profit=x.total-x.cost;renderPendingExternal();}
+
+function updatePaidAmountFromInvoice(){
+  const total=invoiceCart.reduce((a,x)=>a+Number(x.total||0),0);
+  const el=$("paidAmount");
+  if(el){ el.value=total.toFixed(2); el.dataset.invoiceTotal=String(total); }
+  const hint=$("paidAmountHint");
+  if(hint) hint.textContent=`Invoice Total: $${total.toLocaleString(undefined,{maximumFractionDigits:2})} — Paid Amount په اوتومات ډول همدغه Total ته برابر شو؛ که مشتری لږ ورکړي، مقدار بدل کړه.`;
+}
+
+function getSalePayment(total){let entered=+$('paidAmount')?.value||0;if(entered<0||entered>total)return null;let paid=entered,remaining=Math.max(0,total-paid),status=paid>=total?"paid":(paid>0?"partial":"unpaid");return {status,paid,remaining};}
+function resetSalePayment(){updatePaidAmountFromInvoice();}
+function checkPreviousDebt(){let name=(($("sc")?.value)||"").trim().toLowerCase(),phone=(($("scPhone")?.value)||"").replace(/\D/g,"");let box=$("oldDebtWarning");if(!box)return;let matches=db.debts.filter(d=>d.t==="in"&&Number(d.a||0)>0&&((name&&String(d.n||"").trim().toLowerCase()===name)||(phone&&String(d.phone||"").replace(/\D/g,"")===phone)));if(matches.length){let total=matches.reduce((a,d)=>a+Number(d.a||0),0);box.style.display="block";box.innerHTML=`⚠️ <b>خبرداری:</b> دا مشتری پخوانی بقایا حساب لري! پاتې ټول مبلغ: <b>$${total.toLocaleString()}</b>`;if(!box.dataset.alerted){box.dataset.alerted="1";alert(`⚠️ خبرداری: ${matches[0].n} پخوانی بقایا حساب لري. پاتې: $${total.toLocaleString()}`)}}else{box.style.display="none";box.innerHTML="";box.dataset.alerted="";}}
+
+const AFG_LOCATIONS = [
+['Badakhshan','Fayzabad',['Arghanj Khwa','Argo','Baharak','Darayim','Fayzabad','Ashkashim','Jurm','Khash','Khwahan','Kishm','Kohistan','Kuf Ab','Kuran wa Munjan','Ragh','Shahr-e Buzurg','Shaki','Shighnan','Shuhada','Tagab','Teshkan','Wakhan','Warduj','Yamgan','Yawan','Zebak','Darwaz','Darwaz-e Bala']],
+['Baghlan','Pul-e Khumri',['Andarab','Baghlan-e Jadid','Burka','Dahana-e Ghori','Deh Salah','Dushi','Fering wa Gharu','Guzargah-e Nur','Khinjan','Khost wa Fering','Khwaja Hijran','Nahrin','Pul-e Hisar','Pul-e Khumri','Tala wa Barfak']],
+['Kunduz','Kunduz',['Aliabad','Chahar Dara','Imam Sahib','Khanabad','Kunduz Center','Qala-e Zal','Dasht-e Archi']],
+['Takhar','Taloqan',['Baharak','Bangui','Chah Ab','Chal','Darqad','Dasht-e Qala','Farkhar','Hazrat Sultan','Eshkamesh','Kalafgan','Khwaja Bahauddin','Khwaja Ghar','Namak Ab','Rustaq','Taloqan','Warsaj','Yangi Qala']],
+['Balkh','Mazar-e Sharif',['Balkh','Charkent','Chimtal','Dawlatabad','Dehdadi','Kaldar','Kholm','Kishindih','Marmal','Mazar-e Sharif','Nahr-e Shahi','Sholgara','Shortepa','Zari','Hairatan Township','Chahar Bolak']],
+['Faryab','Maymana',['Almar','Andkhoy','Bilchiragh','Dawlatabad','Gurziwan','Khan Char Bagh','Khwaja Sabz Posh','Kohistan','Maymana','Pashtun Kot','Qaramqol','Qaysar','Qurghan','Shirin Tagab']],
+['Jowzjan','Sheberghan',['Aqcha','Darzab','Fayzabad','Khamyab','Khanaqa','Khwaja Dukoh','Mardyan','Mingajik','Qarqin','Qush Tepa','Sheberghan']],
+['Samangan','Aybak',['Aybak','Dara-e Suf-e Bala','Dara-e Suf-e Payin','Firoz Nakhchir','Hazrat Sultan','Khuram wa Sarbagh','Ruy-e Du Ab']],
+['Sar-e Pul','Sar-e Pul',['Balkhab','Gosfandi','Kohistanat','Sangcharak','Sar-e Pul','Sayad','Sozma Qala']],
+['Kabul','Kabul',['Bagrami','Chahar Asyab','Deh Sabz','Farza','Guldara','Istalif','Kabul Center','Kalakan','Khak Jabar','Mir Bacha Kot','Musahi','Paghman','Qara Bagh','Shakardara','Surobi']],
+['Kapisa','Mahmud Raqi',['Alasay','Hesa Awal Kohistan','Hesa Duwum Kohistan','Kohband','Mahmud Raqi','Nijrab','Tagab']],
+['Logar','Pul-e Alam',['Azra','Baraki Barak','Charkh','Kharwar','Khoshi','Mohammad Agha','Pul-e Alam']],
+['Panjshir','Bazarak',['Anaba','Bazarak','Dara','Paryan','Rukha','Shotul','Hesa Awal']],
+['Parwan','Charikar',['Bagram','Charikar','Jabal Saraj','Koh-e Safi','Salang','Sayd Khel','Sheikh Ali','Surkh Parsa','Hesa Awal Kohistan','Siah Gerd']],
+['Maidan Wardak','Maidan Shahr',['Chak-e Wardak','Daymirdad','Hesa Awal Behsud','Jaghatu','Jalrez','Markaz-e Behsud','Maidan Shahr','Nirkh','Saydabad']],
+['Kunar','Asadabad',['Asadabad','Bar Kunar','Chapa Dara','Chawkay','Dangam','Dara-e Pech','Ghaziabad','Khas Kunar','Marawara','Narang wa Badil','Nari','Nurgal','Shigal wa Shiltan','Sarkani','Watapur']],
+['Laghman','Mehtarlam',['Alingar','Alishang','Dawlat Shah','Mehtarlam','Qarghayi']],
+['Nangarhar','Jalalabad',['Achin','Bati Kot','Behsud','Chaparhar','Dara-e Nur','Deh Bala','Durbaba','Goshta','Hisarak','Jalalabad','Kama','Khogyani','Kot','Kuz Kunar','Lalpur','Mohmand Dara','Nazian','Pachir wa Agam','Rodat','Sherzad','Shinwar','Surkh Rod']],
+['Nuristan','Parun',['Barg-e Matal','Du Ab','Kamdesh','Mandol','Nurgram','Parun','Wama','Wigal']],
+['Badghis','Qala-e Naw',['Ab Kamari','Ghormach','Jawand','Muqur','Bala Murghab','Qadis','Qala-e Naw']],
+['Bamyan','Bamyan',['Bamyan Center','Kahmard','Punjab','Sayghan','Shibar','Waras','Yakawlang']],
+['Farah','Farah',['Anar Dara','Bakwa','Bala Buluk','Farah Center','Gulistan','Khak-e Safid','Lash wa Juwayn','Parchaman','Pusht Rod','Qala-e Kah','Shib Koh']],
+['Ghor','Firozkoh',['Firozkoh','Charsada','Dawlat Yar','Dolaina','Lal wa Sarjangal','Pasaband','Saghar','Shahrak','Taywara','Tulak']],
+['Herat','Herat',['Adraskan','Chisht-e Sharif','Farsi','Ghoryan','Gulran','Guzara','Herat Center','Injil','Karkh','Kohsan','Kushk','Kushk-e Kuhna','Obe','Pashtun Zarghun','Shindand','Zinda Jan']],
+['Ghazni','Ghazni',['Ab Band','Ajristan','Andar','Deh Yak','Gelan','Giro','Jaghori','Khwaja Omari','Malistan','Muqur','Nawa','Nawur','Qara Bagh','Rashidan','Waghaz','Zana Khan','Wali Mohammad Shahid']],
+['Khost','Khost',['Bak','Gurbuz','Jaji Maidan','Mandozai','Musa Khel','Nadir Shah Kot','Qalandar','Sabari','Shamal','Spera','Tani','Tere Zayi','Matun']],
+['Paktia','Gardez',['Ahmadabad','Chamkani','Dand Patan','Gardez','Laja Ahmad Khel','Sayed Karam','Chamkani/Shwak','Zurmat','Ali Khel','Zurmat/Zadran']],
+['Paktika','Sharana',['Barmal','Dila','Gayan','Gomal','Jani Khel','Nika','Omna','Sar Rawza','Surobi','Sharana','Tirwa','Argun','Wazakhwa','Wormami','Yahya Khel','Yusuf Khel','Zarghun Shahr','Zirok','Zalghmat']],
+['Daykundi','Nili',['Gizab','Ashtarlay','Kajran','Khidir','Kiti','Miramor','Nili','Sang-e Takht','Shahristan']],
+['Helmand','Lashkar Gah',['Baghran','Dishu','Gereshk','Kajaki','Lashkar Gah','Musa Qala','Nad Ali','Nawa Barakzai','Naw Zad','Sangin','Washir','Nahr-e Saraj']],
+['Kandahar','Kandahar',['Arghandab','Arghistan','Daman','Ghorak','Kandahar Center','Khakrez','Maruf','Maiwand','Miyanishin','Nesh','Panjwayi','Reg','Shah Wali Kot','Shorabak','Spin Boldak','Zhari']],
+['Nimroz','Zaranj',['Chahar Burjak','Chakhansur','Kang','Khash Rod','Zaranj']],
+['Uruzgan','Tarinkot',['Chora','Deh Rawud','Khas Uruzgan','Shahid-e Hassas','Tarinkot']],
+['Zabul','Qalat',['Atghar','Dey Chopan','Kakar','Mizan','Naw Bahar','Qalat','Shah Joy','Shamulzayi','Shinkay','Tarnak wa Jaldak']]
+];
+function initCustomerLocations(){const p=$('scProvince');if(!p)return;p.innerHTML='<option value="">Select Province</option>'+AFG_LOCATIONS.map((x,i)=>`<option value="${i}">${x[0]}</option>`).join('');updateCustomerDistricts();}
+function updateCustomerDistricts(){const p=$('scProvince'),d=$('scDistrict');if(!p||!d)return;const x=AFG_LOCATIONS[Number(p.value)];if(!x){d.innerHTML='<option value="">Select Province First</option>';syncCustomerAddress();return;}d.innerHTML=`<option value="center">🏛️ Center — ${x[1]}</option>`+x[2].filter(v=>v!==x[1] && v!==`مرکز ${x[1]}`).map(v=>`<option value="${esc(v)}">District — ${esc(v)}</option>`).join('');syncCustomerAddress();}
+function syncCustomerAddress(){const p=$('scProvince'),d=$('scDistrict'),a=$('scAddress');if(!p||!d||!a)return;const x=AFG_LOCATIONS[Number(p.value)];if(!x||!d.value){a.value='';checkPreviousDebt();return;}const dn=d.options[d.selectedIndex]?.textContent||'';a.value=`${x[0]} — ${dn.replace(/^🏛️\s*/,'')}`;checkPreviousDebt();}
+function createDebtFromSale(s,p,previousDebt=0){
+  const oldBalance=Math.max(0,Number(previousDebt||0));
+  const invoiceTotal=Number(s.total||0);
+  const newBalance=Math.max(0,oldBalance+invoiceTotal-Number(p.paid||0));
+  const sameCustomer=d=>d.t==="in"&&Number(d.a||0)>0&&((s.c&&String(d.n||"").trim().toLowerCase()===String(s.c||"").trim().toLowerCase())||(s.phone&&String(d.phone||"").replace(/\D/g,"")===String(s.phone||"").replace(/\D/g,"")));
+  const matches=db.debts.filter(sameCustomer);
+  if(newBalance<=0){matches.forEach(d=>{d.a=0;d.status="paid";});return null;}
+  let d=matches[0];
+  if(!d){d={id:"D"+Date.now(),date:new Date().toISOString(),n:s.c||"Walk-in Customer",phone:s.phone||"",address:s.address||"",a:0,total:0,paid:0,t:"in",invoiceId:"",saleIds:[],payments:[]};db.debts.push(d);}
+  d.n=s.c||d.n; d.phone=s.phone||d.phone; d.address=s.address||d.address;
+  d.total=Number(d.total||0)+invoiceTotal;
+  d.paid=Number(d.paid||0)+Number(p.paid||0);
+  d.a=newBalance; d.status="open"; d.t="in"; d.invoiceId=s.invoiceId; d.saleIds=Array.from(new Set([...(d.saleIds||[]),...(s.saleIds||[s.id])]));
+  d.payments=d.payments||[];
+  if(Number(p.paid||0)>0)d.payments.push({date:s.date,amount:Number(p.paid),method:"Invoice payment",note:"New invoice payment"});
+  matches.slice(1).forEach(other=>{other.a=0;other.status="merged";});
+  return d;
+}
+function sell(){
+ let external=$("saleType").value==="external",customer=$("sc").value.trim(),phone=$("scPhone").value.trim(),address=$("scAddress").value.trim();
+ if(!customer||!phone||!address||!$("scProvince").value||!$("scDistrict").value)return alert("Customer Name، WhatsApp، ولایت او ولسوالۍ/مرکز ټول ضروري دي.");
+ checkPreviousDebt();
+ if(external){
+  let name=$("externalProduct").value.trim(),model=$("externalModel").value.trim(),q=+$('sq').value||0,pr=+$('sprice').value||0,cost=+$('scost').value||0,supplier=$("supplierName").value.trim();
+  if(!name||q<=0||pr<=0||cost<=0)return alert("د بل چا جنس معلومات بشپړ کړه.");
+  invoiceCart.push({n:name,model:model,q:q,unitSell:pr,unitCost:cost,total:q*pr,cost:q*cost,profit:q*(pr-cost),c:customer,phone:phone,address:address,external:true,supplier:supplier});
+  renderPendingExternal(); showInvoiceAddStatus(name, model, q);
+  $("externalProduct").value="";$("externalModel").value="";$("sprice").value="";$("scost").value="";$("supplierName").value="";$('sq').value=1;
+  return;
+ }
+ let name=$("sp").value.trim(),model=$("sm").value.trim(),q=+$('sq').value||0,pr=+$('sprice').value||0;
+ if(!name||!model||q<=0||pr<=0)return alert("Product، Model، Quantity او Sell Price سم کړه.");
+ let p=db.products.find(x=>(x.n||"").toLowerCase()===name.toLowerCase()&&String(x.model||"").toLowerCase()===model.toLowerCase());
+ if(!p)return alert("دا Product/Model په Stock کې نشته.");
+ let already=invoiceCart.filter(x=>!x.external&&(x.n||"").toLowerCase()===name.toLowerCase()&&String(x.model||"").toLowerCase()===model.toLowerCase()).reduce((a,x)=>a+x.q,0);
+ if(p.q<q+already)return alert(`Stock کافي نه دی. موجود: ${p.q}، په Invoice کې مخکې: ${already}`);
+ let unitCost=p.b;if(unitCost<=0)return alert("د جنس Buy/Cost Rate معلوم نه دی.");
+ invoiceCart.push({n:name,model:model,q:q,unitSell:pr,unitCost:unitCost,total:q*pr,cost:q*unitCost,profit:q*(pr-unitCost),c:customer,phone:phone,address:address,external:false,supplier:""});
+ updatePaidAmountFromInvoice();
+ renderPendingExternal();
+ showInvoiceAddStatus(name, model, q);
+ $("sp").value="";$("sm").value="";$("sprice").value="";$('sq').value=1;$('saleStockSelect').value="";
+}
+
+function saveInvoiceCart(){
+ if(!invoiceCart.length)return null;
+ const cart=invoiceCart.map(x=>({...x}));
+ const customer=cart[0].c,phone=cart[0].phone,address=cart[0].address;
+ const total=cart.reduce((a,x)=>a+Number(x.total||0),0);
+ const oldMatches=db.debts.filter(d=>d.t==="in"&&Number(d.a||0)>0&&((customer&&String(d.n||"").trim().toLowerCase()===String(customer||"").trim().toLowerCase())||(phone&&String(d.phone||"").replace(/\D/g,"")===String(phone||"").replace(/\D/g,""))));
+ const previousDebt=oldMatches.reduce((a,d)=>a+Number(d.a||0),0),grandTotal=previousDebt+total;
+ const enteredPaid=Number($("paidAmount")?.value||0);
+ if(!Number.isFinite(enteredPaid)||enteredPaid<0||enteredPaid>grandTotal){alert("Paid Amount باید د 0 او ټول حساب (پخوانی + نوی) ترمنځ وي.");return null;}
+ // Validate every stock line before changing any quantity or saved records.
+ for(const item of cart){
+  if(item.external)continue;
+  const p=db.products.find(x=>(x.n||"").toLowerCase()===(item.n||"").toLowerCase()&&String(x.model||"").toLowerCase()===String(item.model||"").toLowerCase());
+  if(!p||Number(p.q||0)<Number(item.q||0))throw new Error(`Stock کافي نه دی: ${item.n} ${item.model}`);
+ }
+ const invoicePaid=Math.min(enteredPaid,total);
+ const pay={status:enteredPaid>=grandTotal?"paid":(enteredPaid>0?"partial":"unpaid"),paid:enteredPaid,remaining:Math.max(0,grandTotal-enteredPaid)};
+ db.invoiceSeq=Number(db.invoiceSeq||0)+1;
+ const invoiceId=(db.invoicePrefix||"SMD")+"-"+String(db.invoiceSeq).padStart(3,"0"),created=[],now=new Date().toISOString();
+ cart.forEach((item,idx)=>{
+  if(!item.external){
+   const p=db.products.find(x=>(x.n||"").toLowerCase()===(item.n||"").toLowerCase()&&String(x.model||"").toLowerCase()===String(item.model||"").toLowerCase());
+   p.q-=Number(item.q||0);
+  }
+  const sale={id:invoiceId+"-"+(idx+1),invoiceId,date:now,n:item.n,model:item.model||"",q:Number(item.q||0),unitSell:Number(item.unitSell||0),unitCost:Number(item.unitCost||0),total:Number(item.total||0),cost:Number(item.cost||0),profit:Number(item.profit??(Number(item.total||0)-Number(item.cost||0))),c:customer,phone,address,external:!!item.external,supplier:item.supplier||""};
+  db.sells.push(sale);created.push(sale);
+ });
+ const saleIds=created.map(x=>x.id),first=created[0];
+ created.forEach(x=>Object.assign(x,{invoiceTotal:total,previousDebt,grandTotal,paid:invoicePaid,totalPaid:enteredPaid,remaining:Math.max(0,total-invoicePaid),grandRemaining:pay.remaining,paymentStatus:pay.status,saleIds}));
+ createDebtFromSale(first,pay,previousDebt);
+ saveDB();
+ invoiceCart=[];pendingExternalItems=[];renderPendingExternal();
+ $("oldDebtWarning").style.display="none";$("oldDebtWarning").dataset.alerted="";$("paidAmount").value=0;$("sq").value=1;resetSalePayment();
+ return created;
+}
+
+function addDebt(){let n=$("dn").value.trim(),a=+$('da').value||0;if(!n||a<=0)return alert("Debt بشپړ کړه.");db.debts.push({id:"D"+Date.now(),date:new Date().toISOString(),n,a,total:a,paid:0,t:$("dt").value,phone:$("dphone").value.trim(),invoiceId:"",payments:[]});$("dn").value="";$("da").value="";$("dphone").value="";saveDB();}
+let activeDebtIndex=null;
+function openReceiveModal(i){let d=db.debts[i];if(!d||Number(d.a||0)<=0)return alert("دا قرض مکمل تصفیه شوی.");activeDebtIndex=i;$("receiveCustomer").innerHTML=`<b>${esc(d.n)}</b> — پاتې قرض: <b>$${Number(d.a||0).toLocaleString()}</b>`;$("receiveAmount").value="";$("receiveMethod").value="Cash";$("receiveBy").value="";$("receiveNote").value="";$("receiveModal").classList.add("on");setTimeout(()=>$("receiveAmount").focus(),50);}
+function closeReceiveModal(){activeDebtIndex=null;$("receiveModal").classList.remove("on");}
+function saveDebtPayment(){let i=activeDebtIndex,d=db.debts[i];if(!d||Number(d.a||0)<=0)return closeReceiveModal();let amount=Number($("receiveAmount").value);let remaining=Number(d.a||0);if(!Number.isFinite(amount)||amount<=0||amount>remaining)return alert("مقدار باید له 0 څخه زیات او له پاتې قرض څخه کم یا برابر وي.");let method=$("receiveMethod").value||"Cash",receivedBy=$("receiveBy").value.trim(),note=$("receiveNote").value.trim(),now=new Date().toISOString();d.payments=d.payments||[];d.payments.push({date:now,amount,method,receivedBy,note});d.paid=Number(d.paid||0)+amount;d.a=Math.max(0,Number(d.total||0)-d.paid);d.status=d.a<=0?"paid":"open";closeReceiveModal();saveDB();let msg=`السلام علیکم ${d.n}،\nستاسې ${amount.toLocaleString()} USD د ${receivedBy||"کارکوونکي"} په لاس د ${new Date(now).toLocaleString()} په وخت کې وصول شول.\nپاتې قرض: ${d.a.toLocaleString()} USD\n${db.name}`;if(d.phone){let n=waNumber(d.phone);window.open("https://wa.me/"+n+"?text="+encodeURIComponent(msg),"_blank");}else alert("وصول ثبت شو. د مشتری WhatsApp نمبر نشته.");}
+function showDebtInvoice(i){let d=db.debts[i],items=db.sells.filter(s=>(d.saleIds||[]).includes(s.id)||s.invoiceId===d.invoiceId);if(items.length)openInvoice(items);else alert("د دې قرض Invoice ونه موندل شو.");}
+function debtHistory(i){let d=db.debts[i],lines=(d.payments||[]).map((p,n)=>(n+1)+". "+new Date(p.date).toLocaleString()+" — $"+Number(p.amount).toLocaleString()+" — "+(p.method||"")+" — "+(p.receivedBy||"نامعلوم")+(p.note?" — "+p.note:"")).join("\n")||"تر اوسه اضافي وصول نشته.";alert("👤 "+d.n+"\nInvoice: "+(d.invoiceId||"Manual")+"\nټول حساب: $"+Number(d.total||d.a).toLocaleString()+"\nټول وصول: $"+Number(d.paid||0).toLocaleString()+"\nپاتې: $"+Number(d.a||0).toLocaleString()+"\n\nد وصول تاریخچه:\n"+lines);}
+
+function saveCapital(){if(!askVerification("Capital بدلول"))return alert("❌ Verification Code ناسم دی.");if(!askSecurity())return alert("❌ Security Code ناسم دی.");db.capital={usd:+$("capUSD").value||0,afn:+$("capAFN").value||0,pkr:+$("capPKR").value||0};saveDB();alert("✅ Capital محفوظ شو.")}
+function saveSettings(){db.name=$("sn").value.trim()||"Samad Solar";db.address=$("saddr").value.trim();db.digital=$("snum").value.trim();db.whatsapp=$("swa").value.trim();db.themeColor=$("themeColor").value||"#0f766e";db.invoiceDesign=Number($("invoiceDesign").value||1);db.invoicePrefix=(($("invoicePrefix")?.value||"SMD").trim().toUpperCase().replace(/[^A-Z0-9_-]/g,"")||"SMD").slice(0,12);saveDB();applyTheme();alert("Settings محفوظ شول.")}
+function verificationCode(){return String(Math.floor(100000+Math.random()*900000));}
+function askVerification(reason){
+  let code=verificationCode();
+  alert("📧 Verification Code: "+code+"\n\nیادونه: دا اوس د Test/Local verification کوډ دی. د حقیقي Gmail OTP لپاره Email service/backend ته اړتیا ده.");
+  let entered=prompt("🔐 "+reason+" لپاره 6 رقمي Verification Code ولیکه:");
+  return entered!==null&&entered.trim()===code;
+}
+function saveSecurity(){
+  if(!askVerification("Security PIN بدلول"))return alert("❌ Verification Code ناسم دی.");
+  let current=prompt("🔐 د اوسني Security PIN کوډ ولیکه:");if(current===null)return;
+  if(current!==db.securityCode)return alert("❌ اوسنی Security PIN ناسم دی.");
+  let c=$("securityCode").value.trim();if(!c)return alert("نوی Security PIN ولیکه.");
+  if(c===current)return alert("نوی PIN باید له پخواني PIN سره یو شان نه وي.");
+  db.securityCode=c;saveDB();$("securityCode").value="";alert("✅ Security PIN بدل شو.");
+}
+function changeLogin(){if(!askVerification("Login بدلول"))return alert("❌ Verification Code ناسم دی.");let u=$("nu").value.trim(),p=$("npw").value;if(!u||!p)return alert("نوی Username او Password ولیکه.");db.user=u;db.pass=p;saveDB();alert("Login بدل شو.")}
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function backup(){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:"application/json"}));a.download="Samad-Solar-Backup.json";a.click()}
+function restore(input){let f=input.files?.[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.products||!x.sells)throw 0;db=x;saveDB();alert("Restore بریالی شو.")}catch(e){alert("Backup فایل ناسم دی.")}input.value=""};r.readAsText(f)}
+function addExpense(){
+  const t=$("et").value.trim();
+  const a=Number($("ea").value)||0;
+  if(!t)return alert("د مصرف نوم ولیکه.");
+  if(a<=0)return alert("د مصرف اندازه ولیکه.");
+  db.exps.push({date:new Date().toISOString(),t,a});
+  saveDB();
+  $("et").value="";$("ea").value="";
+  alert("✅ مصرف محفوظ شو.");
+}
+function deleteExpense(index){
+  const i=Number(index),x=db.exps[i];
+  if(!x)return alert("❌ Expense پیدا نه شو.");
+  openDeleteModal("expense",{index:i,message:`${x.t||"Expense"} — ${Number(x.a||0).toLocaleString()} AFN`});
+}
+function performExpenseDelete(index){
+  const i=Number(index),x=db.exps[i];
+  if(!x){closeDeleteModal();return alert("❌ Expense پیدا نه شو.");}
+  db.exps.splice(i,1);
+  saveDB();
+  closeDeleteModal();
+  alert("✅ Expense حذف شو.");
+}
+/* DELETE SYSTEM — PIN then CONFIRM, rebuilt with an in-app modal */
+let pendingDelete=null;
+function closeDeleteModal(){
+  pendingDelete=null;
+  const m=$("deleteModal");
+  if(m){m.classList.remove("on");m.setAttribute("aria-hidden","true");}
+  if($("deletePinInput"))$("deletePinInput").value="";
+  if($("deletePinStep"))$("deletePinStep").style.display="block";
+  if($("deleteConfirmStep"))$("deleteConfirmStep").style.display="none";
+}
+function openDeleteModal(kind,data){
+  pendingDelete={kind,...data};
+  $("deleteTitle").textContent=kind==="stock"?"📦 Stock — Delete":kind==="sale"?"💰 Sale — Delete":"💸 Expense — Delete";
+  $("deleteMessage").textContent=data.message||"";
+  $("deletePinInput").value="";
+  $("deletePinStep").style.display="block";
+  $("deleteConfirmStep").style.display="none";
+  $("deleteModal").classList.add("on");
+  $("deleteModal").setAttribute("aria-hidden","false");
+  setTimeout(()=>$("deletePinInput")?.focus(),50);
+}
+function deleteStockItem(index){
+  const i=Number(index),p=db.products[i];
+  if(!p)return alert("❌ Stock جنس پیدا نه شو.");
+  openDeleteModal("stock",{index:i,message:`${p.n||"Product"}${p.model?" — "+p.model:""}`});
+}
+function deleteSaleInvoice(invoiceId){
+  const inv=String(invoiceId??"");
+  const items=db.sells.filter(x=>String(x.invoiceId||x.id)===inv);
+  if(!items.length)return alert("❌ Sale / Invoice پیدا نه شو.");
+  openDeleteModal("sale",{invoiceId:inv,message:`Invoice ${inv} — ${items.length} item(s)`});
+}
+function performPendingDelete(){
+  if(!pendingDelete)return;
+  if(pendingDelete.kind==="stock")performStockDelete(pendingDelete.index);
+  else if(pendingDelete.kind==="sale")performSaleDelete(pendingDelete.invoiceId);
+  else performExpenseDelete(pendingDelete.index);
+}
+function performStockDelete(index){
+  const i=Number(index),p=db.products[i];
+  if(!p){closeDeleteModal();return alert("❌ Stock جنس پیدا نه شو.");}
+  db.products.splice(i,1);
+  saveDB();
+  closeDeleteModal();
+  alert("✅ Stock جنس حذف شو.");
+}
+function performSaleDelete(invoiceId){
+  const inv=String(invoiceId??"");
+  const items=db.sells.filter(x=>String(x.invoiceId||x.id)===inv);
+  if(!items.length){closeDeleteModal();return alert("❌ Sale / Invoice پیدا نه شو.");}
+  items.forEach(s=>{
+    if(s.external)return;
+    const p=db.products.find(x=>String(x.n||"").toLowerCase()===String(s.n||"").toLowerCase() && String(x.model||"").toLowerCase()===String(s.model||"").toLowerCase());
+    if(p)p.q=Number(p.q||0)+Number(s.q||0);
+  });
+  db.sells=db.sells.filter(x=>String(x.invoiceId||x.id)!==inv);
+  db.debts=(db.debts||[]).filter(d=>String(d.invoiceId||"")!==inv);
+  saveDB();
+  closeDeleteModal();
+  alert(`✅ Sale / Invoice ${inv} حذف شو.`);
+}
+window.deleteStockItem=deleteStockItem;
+window.deleteSaleInvoice=deleteSaleInvoice;
+
+function editSale(i){if(!askSecurity())return alert("Security Code ناسم دی.");let s=db.sells[i];let q=prompt("Quantity:",s.q);if(q===null||isNaN(+q)||+q<=0)return;let price=prompt("نوی Unit Sell USD:",s.unitSell??(s.total/s.q));if(price===null||isNaN(+price)||+price<=0)return;let cost=prompt("Unit Buy/Cost USD:",s.unitCost??(s.cost/s.q));if(cost===null||isNaN(+cost)||+cost<0)return;s.q=+q;s.unitSell=+price;s.unitCost=+cost;s.total=s.q*s.unitSell;s.cost=s.q*s.unitCost;s.profit=s.total-s.cost;saveDB();}
+
+function openInvoice(input){
+ // A history-row click supplies one sale record; expand it to the complete invoice.
+ let items;
+ if(Array.isArray(input)) items=input.slice();
+ else if(input&&input.invoiceId) items=db.sells.filter(x=>String(x.invoiceId)===String(input.invoiceId));
+ else items=input?[input]:[];
+ if(!items.length)return alert("Invoice items ونه موندل شول.");
+ items.sort((a,b)=>String(a.id||"").localeCompare(String(b.id||""),undefined,{numeric:true}));
+ const total=items.reduce((a,x)=>a+Number(x.total||0),0),first=items[0]||{};
+ const previousDebt=Number(first.previousDebt||0),invoicePaid=Number(first.paid||0),grandTotal=Number(first.grandTotal??(previousDebt+Number(first.invoiceTotal??total))),paid=Number(first.totalPaid??invoicePaid),remaining=Number(first.grandRemaining??Math.max(0,grandTotal-paid));
+ const rows=items.map(s=>`<tr><td>${esc(s.n)}</td><td>${esc(s.model||"")}</td><td>${Number(s.q||0)}</td><td>$${(Number(s.total||0)/(Number(s.q||0)||1)).toLocaleString(undefined,{maximumFractionDigits:2})}</td><td>$${Number(s.total||0).toLocaleString(undefined,{maximumFractionDigits:2})}</td></tr>`).join("");
+ const customer=first.c||"Walk-in Customer",customerAddress=first.address||"",invoiceId=first.invoiceId||first.id||Date.now(),design=Number(db.invoiceDesign||1);
+ $("invoiceContent").innerHTML=`<div class="invoice design${design}"><div class="invoice-watermark">${db.logo?`<img src="${db.logo}">`:""}</div><div class="invoice-head"><div><h2>${esc(db.name)}</h2><div>${esc(db.address||"")}</div><div>${esc(db.digital||"")} ${db.whatsapp?" | WhatsApp: "+esc(db.whatsapp):""}</div><div>Invoice # ${esc(invoiceId)}</div></div>${db.logo?`<img class="logo" src="${db.logo}">`:""}</div><p>Date: ${new Date(first.date||Date.now()).toLocaleString()}</p><p>Customer: ${esc(customer)}</p><p>Address: ${esc(customerAddress)}</p><table><tr><th>Product</th><th>Model</th><th>Qty</th><th>Unit</th><th>Total</th></tr>${rows}<tr><th colspan="4" style="text-align:left">Invoice subtotal</th><th>$${total.toLocaleString(undefined,{maximumFractionDigits:2})}</th></tr></table><div style="margin-top:14px;border-top:1px solid #ddd;padding-top:10px"><div>نوی بیل: <b>$${total.toLocaleString(undefined,{maximumFractionDigits:2})}</b></div><div>پخوانی حساب: <b>$${previousDebt.toLocaleString(undefined,{maximumFractionDigits:2})}</b></div><h3 style="text-align:left;margin:8px 0">ټول: $${grandTotal.toLocaleString(undefined,{maximumFractionDigits:2})}</h3><div>وصول: <b>$${paid.toLocaleString(undefined,{maximumFractionDigits:2})}</b></div><div class="pill" style="margin-top:8px">جمله باقي: <b>$${remaining.toLocaleString(undefined,{maximumFractionDigits:2})}</b> | ${remaining<=0?"Paid":"Debt"}</div></div><p style="text-align:center">تشکر له دې چې زموږ برند مو انتخاب کړ.</p></div>`;
+ $("invoiceModal").classList.add("on");
+}
+
+function printSaveInvoice(){
+ if(!invoiceCart.length)return alert("لومړی جنس Add to Invoice کړه.");
+ try{
+  let created=saveInvoiceCart();
+  if(!created)return;
+  openInvoice(created);
+  setTimeout(()=>window.print(),250);
+ }catch(e){alert(e.message||"Invoice ثبت نه شو.");}
+}
+function closeInvoice(){$("invoiceModal").classList.remove("on")}
+function shareInvoice(){
+ const content=$("invoiceContent");
+ const textContent=content?content.innerText.trim():"";
+ if(!textContent)return alert("لومړی Invoice خلاص کړه.");
+ window.open("https://wa.me/?text="+encodeURIComponent(textContent),"_blank");
+}
+
+function waNumber(n){return String(n||"").replace(/[^0-9]/g,"").replace(/^0/,"93")}
+function debtMessage(d){return `السلام علیکم ${d.n}، د Samad Solar له طرفه یادونه: ستاسو پاتې قرض ${d.a.toLocaleString()} USD دی. مهرباني وکړئ د امکان تر حده یې تصفیه کړئ. مننه. ${db.name}${db.digital?" | "+db.digital:""}`}
+function sendDebtWhatsApp(d){let n=waNumber(d.phone);if(!n)return alert("د دې قرضدار WhatsApp نمبر نشته.");window.open("https://wa.me/"+n+"?text="+encodeURIComponent(debtMessage(d)),"_blank")}
+function thursdayReminder(){let box=$("thursdayReminder");if(!box)return;let ds=db.debts.filter(d=>d.t==="in"&&d.phone);if(new Date().getDay()!==4){box.innerHTML="<div class=\"pill\">📅 د پنجشنبې په ورځ به دلته د قرضدارانو یادونه ښکاره شي.</div>";return}if(!ds.length){box.innerHTML="<div class=\"pill\">✅ د WhatsApp نمبر لرونکی قرضدار نشته.</div>";return}box.innerHTML=ds.map((d,i)=>`<div class=\"card\" style=\"margin-top:8px\"><b>${esc(d.n)}</b> — $${d.a.toLocaleString()}<br><button class=\"primary\" style=\"margin-top:7px\" onclick=\"sendDebtWhatsApp(db.debts[${db.debts.indexOf(d)}])\">📱 Send WhatsApp</button></div>`).join("")}
+function makeReport(){let f=$("rFrom")?$("rFrom").value:"",t=$("rTo")?$("rTo").value:"";let ok=x=>{let d=x.date.slice(0,10);return(!f||d>=f)&&(!t||d<=t)};let ss=db.sells.filter(ok),bb=db.buys.filter(ok),ee=db.exps.filter(ok);let sales=ss.reduce((a,x)=>a+x.total,0),buys=bb.reduce((a,x)=>a+x.total,0),exp=ee.reduce((a,x)=>a+x.a,0),cost=ss.reduce((a,x)=>a+x.cost,0);let grossProfit=sales-cost;$('rc').innerHTML=`<div class="card">Sales<div class="num">$${sales.toLocaleString()}</div></div><div class="card">Cost of Goods Sold<div class="num">$${cost.toLocaleString()}</div></div><div class="card">Gross Profit<div class="num">$${grossProfit.toLocaleString()}</div></div><div class="card">Purchases<div class="num">$${buys.toLocaleString()}</div></div><div class="card">Expenses<div class="num">${exp.toLocaleString()} AFN</div></div><div class="card">Profit Detail<div style="font-size:13px">${ss.map(x=>`${esc(x.n)} × ${x.q}: $${(x.profit??(x.total-x.cost)).toLocaleString()}`).join("<br>")||"No sales"}</div></div>`}
+function showPurchaseDetails(i){let x=db.buys[i];alert(`Product: ${x.n||""}\nModel: ${x.model||""}\nCategory: ${x.cat||""}\nSupplier: ${x.supplier||""}\nQuantity: ${x.q||0}\nUnit Buy: $${((x.total||0)/(x.q||1)).toFixed(2)}\nTotal CBM: ${x.cbm||0}\nTotal Weight: ${x.kg||0} KG\nCBM Rate: $${x.cbmRate||0} / CBM\nWeight Rate: $${x.weightRate||0} / KG\nBase Expense: $${x.baseExpense||0}\nExtra Expense: $${x.extraExpense||0}\nAllocated Expense: $${(x.allocated||0).toFixed(2)}\nLanded Total: $${(x.landedTotal||0).toFixed(2)}\nLanded / Unit: $${(x.landedUnit||0).toFixed(2)}`)}
+db.themeColor=db.themeColor||"#0f766e";db.invoiceDesign=db.invoiceDesign||1;db.invoicePrefix=db.invoicePrefix||"SMD";db.invoiceSeq=Number(db.invoiceSeq||0);db.stockCategories=db.stockCategories||["Batt","Solar","Inverter"];
+function renderInvoiceDesigns(){
+ const box=$("invoiceDesignGrid"); if(!box)return;
+ const designs=[
+  [1,"Design 1 — Modern Blue","Clean & Professional","d1"],
+  [2,"Design 2 — Green Nature","Fresh & Eco Friendly","d2"],
+  [3,"Design 3 — Dark Modern","Bold & Stylish","d3"],
+  [4,"Design 4 — Minimal Clean","Simple & Elegant","d4"],
+  [5,"Design 5 — Solar Creative","Modern & Attractive","d5"]
+ ];
+ box.innerHTML=designs.map(([n,title,sub,cl])=>{
+   const selected=Number(db.invoiceDesign||1)===n;
+   return `<div class="design-card ${selected?'selected':''}" onclick="selectInvoiceDesign(${n})" role="button" aria-label="${esc(title)}">
+     <div class="design-preview ${cl}">
+       <div class="dp-brand"><span>SAMAD SOLAR</span><b>INVOICE</b></div>
+       <div class="dp-meta"><i></i><i></i><i></i></div>
+       <div class="dp-table"><div class="dp-row head"><span>Product</span><span>Model</span><span>Qty</span></div><div class="dp-row"><span>Battery</span><span>200Ah</span><span>2</span></div><div class="dp-row"><span>Solar</span><span>550W</span><span>4</span></div><div class="dp-row"><span>Inverter</span><span>5KW</span><span>1</span></div></div>
+       <div class="dp-total"><span>Total</span><b>$114,000</b></div>
+       <div class="dp-foot"><span>Thank you</span><span>Samad Solar</span></div>
+     </div>
+     <div class="design-name">${selected?'✓ ':''}${title}</div><div class="design-choice">${sub}</div>
+   </div>`;
+ }).join("");
+}
+function selectInvoiceDesign(n){db.invoiceDesign=Number(n);if($("invoiceDesign"))$("invoiceDesign").value=String(n);renderInvoiceDesigns();}
+function applyTheme(){document.documentElement.style.setProperty("--theme",db.themeColor||"#0f766e");if($("themeColor"))$("themeColor").value=db.themeColor||"#0f766e";renderInvoiceDesigns();}
+function renderStockCategories(){let sel=$("saleStockCategory");if(!sel)return;let current=sel.value;let cats=db.stockCategories||["Batt","Solar","Inverter"];sel.innerHTML='<option value="">— Stock انتخاب کړه —</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("")+'<option value="__add__">＋ Add another</option>';if(current && cats.includes(current))sel.value=current;}
+function render(){
+ refreshSaleCategories(); refreshSaleProducts();
+ applyTheme();renderStockCategories();
+ $("brand").textContent=""+db.name;$("sn").value=db.name;$("saddr").value=db.address||"";$("snum").value=db.digital||"";$("swa").value=db.whatsapp||"";if($("invoicePrefix"))$("invoicePrefix").value=db.invoicePrefix||"SMD";if(db.logo&&$("topLogo")){$("topLogo").src=db.logo;$("topLogo").style.display="inline-block"}else if($("topLogo"))$("topLogo").style.display="none";thursdayReminder();
+  initCustomerLocations();
+ $("securityCode").value=db.securityCode||"";$("capUSD").value=db.capital.usd;$("capAFN").value=db.capital.afn;$("capPKR").value=db.capital.pkr;
+ $("capShowUSD").textContent="$"+db.capital.usd.toLocaleString();$("capShowAFN").textContent=db.capital.afn.toLocaleString()+" AFN";$("capShowPKR").textContent=db.capital.pkr.toLocaleString()+" PKR";
+ let sales=db.sells.reduce((a,x)=>a+x.total,0),buys=db.buys.reduce((a,x)=>a+x.total,0),ex=db.exps.reduce((a,x)=>a+x.a,0),cost=db.sells.reduce((a,x)=>a+(x.cost??((x.unitCost??0)*x.q)),0),profit=sales-cost;
+ $("np").textContent=db.products.length;$("ns").textContent=db.products.reduce((a,x)=>a+x.q,0).toLocaleString();$("sales").textContent="$"+sales.toLocaleString();$("purs").textContent="$"+buys.toLocaleString();$("exps").textContent=ex.toLocaleString()+" AFN";$("debts").textContent="$"+db.debts.filter(x=>x.t==="in").reduce((a,x)=>a+x.a,0).toLocaleString();$("profit").textContent="$"+profit.toLocaleString();
+ let low=db.products.filter(x=>x.q<=x.l);$("low").style.display=low.length?"block":"none";$("low").textContent="⚠️ Low Stock: "+low.map(x=>`${x.n} (${x.q})`).join("، ");
+ $("st").innerHTML=db.products.map((x,i)=>`<tr><td>${x.updatedAt?new Date(x.updatedAt).toLocaleString():"—"}</td><td>${esc(x.n)}</td><td>${esc(x.model||"")}</td><td>${esc(x.cat||"")}</td><td>$${Number(x.b||0).toLocaleString()}</td><td>${Number(x.q||0)}</td><td>${Number(x.l||0)}</td><td><button class="danger" type="button" data-delete-stock="${i}">🗑️ Delete</button></td></tr>`).join("");
+ refreshSaleProducts();refreshPurchaseHints();
+ $("bt").innerHTML=db.buys.map(x=>`<tr><td>${new Date(x.date).toLocaleDateString()}</td><td><b>${esc(x.n)}</b><br>${esc(x.model||"")}<br>${esc(x.cat||"")}</td><td>${esc(x.supplier||"")}</td><td>${x.q}</td><td>$${(x.total/x.q||0).toLocaleString(undefined,{maximumFractionDigits:2})}</td><td>${(x.cbm||0).toLocaleString(undefined,{maximumFractionDigits:4})}</td><td>${(x.kg||0).toLocaleString(undefined,{maximumFractionDigits:2})}</td><td>$${(x.allocated||0).toLocaleString(undefined,{maximumFractionDigits:2})}</td><td>$${(x.landedTotal||x.total||0).toLocaleString(undefined,{maximumFractionDigits:2})}</td><td>$${(x.landedUnit||0).toLocaleString(undefined,{maximumFractionDigits:2})}</td><td><button onclick="showPurchaseDetails(${db.buys.indexOf(x)})">📋 Details</button></td></tr>`).join("");
+ $("st2").innerHTML=db.sells.slice().reverse().map(x=>{let i=db.sells.indexOf(x),uc=x.unitCost??(x.cost/x.q||0),us=x.unitSell??(x.total/x.q||0),gp=x.profit??(x.total-x.cost);return `<tr><td>${new Date(x.date).toLocaleString()}</td><td>${esc(x.c)}</td><td>${esc(x.n)}<br><small>${esc(x.model||"")}</small></td><td>${x.q}</td><td>$${uc.toLocaleString()}</td><td>$${us.toLocaleString()}</td><td>$${x.total.toLocaleString()}</td><td>$${gp.toLocaleString()}</td><td>${x.external?`📦 External${x.supplier?" — "+esc(x.supplier):""}`:"🏪 Stock"}</td><td><button onclick="openInvoice(db.sells[${i}])">Invoice</button> <button onclick="editSale(${i})">Edit</button> <button class="danger" type="button" data-delete-sale="${esc(String(x.invoiceId||x.id))}">🗑️ Delete</button></td></tr>`}).join("");
+ $("etab").innerHTML=db.exps.slice().reverse().map(x=>{let i=db.exps.indexOf(x);return `<tr><td>${new Date(x.date).toLocaleString()}</td><td>${esc(x.t)}</td><td>${Number(x.a||0).toLocaleString()} AFN</td><td><button class="danger" type="button" data-delete-expense="${i}">🗑️ Delete</button></td></tr>`}).join("");
+ $("dtab").innerHTML=db.debts.slice().reverse().map(x=>{let i=db.debts.indexOf(x);return `<tr><td>${new Date(x.date).toLocaleString()}</td><td>${esc(x.n)}</td><td>${x.t==="in"?"موږ ته":"موږ پرې"}</td><td>$${Number(x.total||x.a||0).toLocaleString()}</td><td>$${Number(x.paid||0).toLocaleString()}</td><td>$${Number(x.a||0).toLocaleString()}</td><td>${x.invoiceId?`<button onclick="showDebtInvoice(${i})">📄 Invoice</button>`:""} <button onclick="debtHistory(${i})">📋 History</button> ${Number(x.a||0)>0&&x.t==="in"?`<button class="primary" onclick="openReceiveModal(${i})">💵 Receive</button>`:""} ${x.t==="in"&&x.phone?`<button class="primary" onclick="sendDebtWhatsApp(db.debts[${i}])">📱 WhatsApp</button>`:""}</td></tr>`}).join("");
+ let grossProfit=sales-cost;$("rc").innerHTML=`<div class="card">Sales<div class="num">$${sales.toLocaleString()}</div></div><div class="card">Cost of Goods Sold<div class="num">$${cost.toLocaleString()}</div></div><div class="card">Gross Profit<div class="num">$${grossProfit.toLocaleString()}</div></div><div class="card">Purchases<div class="num">$${buys.toLocaleString()}</div></div><div class="card">Expenses<div class="num">${ex.toLocaleString()} AFN</div></div>`;
+ if(db.logo && $("logoPreview")){$("logoPreview").src=db.logo;$("logoPreview").style.display="block"}
+}
+window.addEventListener("DOMContentLoaded",()=>{
+ document.addEventListener("click",e=>{
+   const stockBtn=e.target.closest("[data-delete-stock]");
+   if(stockBtn){e.preventDefault();deleteStockItem(Number(stockBtn.dataset.deleteStock));return;}
+   const saleBtn=e.target.closest("[data-delete-sale]");
+   if(saleBtn){e.preventDefault();deleteSaleInvoice(saleBtn.dataset.deleteSale);return;}
+   const expenseBtn=e.target.closest("[data-delete-expense]");
+   if(expenseBtn){e.preventDefault();deleteExpense(Number(expenseBtn.dataset.deleteExpense));return;}
+ });
+ $("deleteCancelBtn")?.addEventListener("click",closeDeleteModal);
+ $("deleteNoBtn")?.addEventListener("click",closeDeleteModal);
+ $("deletePinBtn")?.addEventListener("click",()=>{
+   if(!pendingDelete)return;
+   const pin=$("deletePinInput").value;
+   if(String(pin)!==String(db.securityCode||"786")){alert("❌ Security PIN ناسم دی.");$("deletePinInput").focus();return;}
+   $("deletePinStep").style.display="none";
+   $("deleteConfirmStep").style.display="block";
+ });
+ $("deleteYesBtn")?.addEventListener("click",performPendingDelete);
+ $("deletePinInput")?.addEventListener("keydown",e=>{if(e.key==="Enter")$("deletePinBtn").click();if(e.key==="Escape")closeDeleteModal();});
+ $("loginBtn")?.addEventListener("click",login);$("createAccountBtn")?.addEventListener("click",createNewAccount);$("forgotPasswordBtn")?.addEventListener("click",forgotPassword);$("updateRecoveryBtn")?.addEventListener("click",updateRecoveredPassword);$("sendOtpBtn")?.addEventListener("click",sendPhoneOtp);$("verifyOtpBtn")?.addEventListener("click",verifyPhoneOtp);$("loginOtp")?.addEventListener("keydown",e=>{if(e.key==="Enter")verifyPhoneOtp()});$("loginEmail")?.addEventListener("keydown",e=>{if(e.key==="Enter")login()});$("pw")?.addEventListener("keydown",e=>{if(e.key==="Enter")login()});$("loginMobile")?.addEventListener("keydown",e=>{if(e.key==="Enter")sendPhoneOtp()});$("expenseBtn")?.addEventListener("click",addExpense);
+ $("backupBtn")?.addEventListener("click",backup);$("file")?.addEventListener("change",e=>restore(e.target));$("saveCapBtn")?.addEventListener("click",saveCapital);
+ $("settingsBtn")?.addEventListener("click",saveSettings);$("changeLoginBtn")?.addEventListener("click",changeLogin);$("saveSecurityBtn")?.addEventListener("click",saveSecurity);
+ $("logoFile")?.addEventListener("change",e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{db.logo=r.result;saveDB()};r.readAsDataURL(f)});
+ $("purchaseDate").value=new Date().toISOString().slice(0,10);$("stockDateTime").value=new Date().toISOString().slice(0,16);toggleAlloc();renderPurchaseLines();refreshStockHints();$("purchaseDate").value=new Date().toISOString().slice(0,10);toggleAlloc();toggleExtra();renderPurchaseLines();render();toggleSaleType();renderPendingExternal();setInterval(()=>$("clock").textContent=new Date().toLocaleString(),1000);
+ if(supabaseClient){
+  supabaseClient.auth.onAuthStateChange((event)=>{if(event==="PASSWORD_RECOVERY")showPasswordRecovery();});
+  supabaseClient.auth.getSession().then(({data})=>{if(data.session)openAppAfterAuth();});
+}
+});
+</script>
+
+
+</body></html>
